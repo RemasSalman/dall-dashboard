@@ -1,0 +1,96 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #E5E7Eb;
+    padding: 10px 12px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* LEFT SECTION -------------------------------------------------------- */
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* -------------------------------------------------------
+   Combined MAP SELECTOR (Matches Figma exactly)
+------------------------------------------------------- */
+.map-selector {
+    display: flex;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #CBD5E1;
+    overflow: hidden;
+    height: 40px;
+    width: 300px;
+}
+
+/* Left green label */
+.map-label {
+    background: #2B7A78;
+    /* Figma green */
+    color: white;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    font-family: Poppins;
+    font-size: 14px;
+    border-right: 1px solid #CBD5E1;
+}
+
+/* Right dropdown container */
+.map-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+/* Native select */
+.map-dropdown select {
+    appearance: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Poppins;
+    font-size: 14px;
+    padding-right: 20px;
+}
+
+/* Chevron icon */
+.chevron {
+    position: absolute;
+    left: 210px;
+    font-size: 12px;
+    opacity: 0.4;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+/* RIGHT SECTION ------------------------------------------------------- */
+
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+
+/* Fullscreen button */
+.fullscreen-button {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #334155;
+}

@@ -1,0 +1,335 @@
+/* ========================= WRAPPER ========================= */
+.sidebar-wrapper {
+    width: 280px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+}
+
+.sidebar-area {
+    width: 300px;
+    height: 100%;
+    overflow-y: auto;
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+
+/* ========================= ADD NEW BUTTON ========================= */
+.add-new-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+    width: 100%;
+    height: 35px;
+
+    background: #ffffff;
+    border: 1px solid #2abbac;
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #2abbac;
+    cursor: pointer;
+}
+
+.plus-icon {
+    font-size: 18px;
+    line-height: 0;
+}
+
+
+/* ========================= ACCORDION ITEM ========================= */
+.accordion-item {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+
+/* ========================= HEADER ========================= */
+
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* LEFT GROUP */
+.left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Icons */
+.menu-icon,
+.upload-icon,
+.info-icon,
+.settings-icon {
+    font-size: 18px;
+    color: #0f172a;
+    opacity: 0.75;
+}
+
+/* Title */
+.title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #0f172a;
+}
+
+
+/* ========================= COUNT BADGE ========================= */
+.count-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 63px;
+    height: 23px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    gap: 3px;
+    font-size: 13px;
+}
+
+.count-box .value {
+    color: #22c55e;
+    /* green-500 */
+    font-weight: 600;
+}
+
+.count-box .total {
+    color: #64748b;
+    /* slate-500 */
+}
+
+
+/* ========================= CHEVRON ========================= */
+.chevron {
+    opacity: 0.5;
+    transition: transform 0.2s ease-in-out;
+}
+
+.chevron.open {
+    transform: rotate(180deg);
+}
+
+
+/* ========================= CONTENT ========================= */
+.accordion-content {
+    background: #fbfbfb;
+    padding: 10px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.accordion-content h4 {
+    margin-bottom: 5px;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #0f172a;
+}
+
+.accordion-content ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.accordion-content li {
+    padding: 5px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* ========================= SECTION HEADER ========================= */
+.anchor-section {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.section-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.nav {
+    background: #3b82f6;
+}
+
+/* Blue */
+.service {
+    background: #f59e0b;
+}
+
+/* Orange */
+
+.section-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.section-ellipsis {
+    font-size: 20px;
+    color: #64748b;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+/* ========================= ANCHOR LIST ROWS ========================= */
+.anchor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.anchor-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 8px 4px;
+    border-bottom: 1px solid #e2e8f0;
+
+    font-size: 14px;
+    color: #1e293b;
+}
+
+/* FORM WRAPPER */
+.details-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+/* LABEL */
+.form-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #0f172a;
+}
+
+/* TEXT INPUT */
+.form-input {
+    width: 90%;
+    height: 30px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    font-size: 10px;
+}
+
+/* TEXTAREA */
+.form-textarea {
+    width: 90%;
+    height: 40px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    font-size: 10px;
+}
+
+/* SELECT BOX */
+.select-box {
+    position: relative;
+}
+
+.select-box select {
+    width: 90%;
+    height: 30px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    font-size: 10px;
+    appearance: none;
+}
+
+.chevron-select {
+    position: absolute;
+    top: 50%;
+    right: 35px;
+    width: 6px;
+    opacity: 0.4;
+    transform: translateY(-40%);
+}
+
+/* COORDINATION */
+.coord-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.coord-item label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.xyz-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.xyz-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.xyz-input input {
+    width: 40px;
+    height: 10px;
+    border: none;
+    background: transparent;
+    font-size: 10px;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* APPLY BUTTON */
+.apply-btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 6px;
+    background: #e2e8f0;
+    color: #64748b;
+    border: none;
+    font-size: 15px;
+    margin-top: 10px;
+}

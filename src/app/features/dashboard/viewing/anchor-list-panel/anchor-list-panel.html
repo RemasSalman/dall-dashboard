@@ -1,0 +1,150 @@
+<div class="sidebar-wrapper">
+
+    <!-- ADD NEW BUTTON -->
+    <button class="add-new-btn">
+        <span class="plus-icon">＋</span>
+        Add New
+    </button>
+
+    <!-- =============== ANCHORS LIST =============== -->
+    <div class="accordion-item">
+
+        <div class="accordion-header" (click)="toggleAnchorsList()">
+            <div class="left">
+                <img src="assets/icons/menu.svg" class="icon" alt="menu">
+                <span class="title">Anchors List</span>
+            </div>
+
+            <div class="count-box">
+                <span class="value">05</span>/<span class="total">30</span>
+            </div>
+
+            <img src="assets/icons/chevron.png" width="8" class="chevron" [class.open]="isAnchorsListOpen">
+        </div>
+
+        @if (isAnchorsListOpen) {
+        <div class="accordion-content">
+
+            <div class="anchor-section">
+                <div class="section-header">
+                    <span class="section-dot nav"></span>
+                    <span class="section-title">Navigation Anchors</span>
+                </div>
+
+                <ul class="anchor-list">
+                    <li class="anchor-row">
+                        <span>Place Holder 01</span>
+                    </li>
+                    <li class="anchor-row">
+                        <span>Place Holder 02</span>
+                    </li>
+                    <li class="anchor-row">
+                        <span>WC Section 01</span>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="anchor-section">
+                <div class="section-header">
+                    <span class="section-dot service"></span>
+                    <span class="section-title">Service Anchors</span>
+                </div>
+
+                <ul class="anchor-list">
+                    <li class="anchor-row">
+                        <span>Place Holder 01</span>
+                    </li>
+                    <li class="anchor-row">
+                        <span>Place Holder 02</span>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+        }
+    </div>
+
+
+
+    <!-- =============== ANCHOR DETAILS =============== -->
+    <div class="accordion-item">
+
+        <div class="accordion-header" (click)="toggleAnchorDetails()">
+            <div class="left">
+                <img src="assets/icons/info.svg" class="icon" alt="info">
+                <span class="title">Anchor Details</span>
+            </div>
+
+            <img src="assets/icons/chevron.png" width="8" class="chevron" [class.open]="isAnchorDetailsOpen">
+        </div>
+
+        @if (isAnchorDetailsOpen) {
+        <div class="accordion-content">
+            <div class="details-form">
+
+                <!-- Anchor Name -->
+                <label class="form-label">Anchor Name</label>
+                <input type="text" class="form-input" placeholder="Enter a name">
+
+                <!-- Anchor Type -->
+                <label class="form-label">Anchor Type</label>
+                <div class="select-box">
+                    <select>
+                        <option>Select a type</option>
+                    </select>
+                    <img src="assets/icons/chevron.png" class="chevron-select">
+                </div>
+
+                <!-- Description -->
+                <label class="form-label">Anchor Description</label>
+                <textarea class="form-textarea" placeholder="Enter a description here"></textarea>
+
+                <!-- Coordination -->
+                <label class="form-label">Coordination</label>
+
+                <div class="coord-grid">
+
+                    <div class="coord-item">
+                        <label>Position</label>
+                        <div class="xyz-row">
+                            <div class="xyz-input"><span>X</span> <input type="number" value="0"></div>
+                            <div class="xyz-input"><span>Y</span> <input type="number" value="0"></div>
+                            <div class="xyz-input"><span>Z</span> <input type="number" value="0"></div>
+                        </div>
+                    </div>
+
+                    <div class="coord-item">
+                        <label>Scale</label>
+                        <div class="xyz-row">
+                            <div class="xyz-input"><span>X</span> <input type="number" value="0"></div>
+                            <div class="xyz-input"><span>Y</span> <input type="number" value="0"></div>
+                            <div class="xyz-input"><span>Z</span> <input type="number" value="0"></div>
+                        </div>
+                    </div>
+
+                    <div class="coord-item">
+                        <label>Rotation</label>
+                        <div class="xyz-row">
+                            <div class="xyz-input"><span>X</span> <input type="number" value="0"></div>
+                            <div class="xyz-input"><span>Y</span> <input type="number" value="0"></div>
+                            <div class="xyz-input"><span>Z</span> <input type="number" value="0"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Apply Button -->
+                <button class="apply-btn">Apply</button>
+
+            </div>
+        </div>
+        }
+    </div>
+
+
+
+
+
+</div>

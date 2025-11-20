@@ -1,0 +1,47 @@
+.page-wrapper {
+    background: #F1F5F9;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+.viewing-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+:host {
+    display: flex;
+    height: 90vh;
+}
+
+/* The row that contains map + anchor list */
+.content-row {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+    height: calc(100vh - 180px); // adjust for your header/toolbar heights
+    overflow: hidden;
+}
+
+/* Map takes all left space */
+.map-area {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+/* Right panel fixed width */
+.anchor-panel {
+    height: 100%;
+    overflow: hidden;
+}
