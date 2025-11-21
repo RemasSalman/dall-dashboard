@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   standalone: true,
   selector: 'app-map-canvas',
   templateUrl: './map-canvas.html',
-  styleUrls: ['./map-canvas.scss']
+  styleUrls: ['./map-canvas.scss'] ,
+  imports: [CommonModule]
 })
 export class MapCanvasComponent {
 
