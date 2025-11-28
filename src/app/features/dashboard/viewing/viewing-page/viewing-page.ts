@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
-import { MapToolbar } from '../map-toolbar/map-toolbar';
+import { MapToolbarComponent } from '../map-toolbar/map-toolbar';
+import { AnchorListPanelComponent  } from '../anchor-list-panel/anchor-list-panel';
 import { MapCanvasComponent } from '../map-canvas/map-canvas';
-import { AnchorListPanel } from '../anchor-list-panel/anchor-list-panel';
 
 @Component({
   selector: 'app-viewing-page',
   standalone: true,
   imports: [
-    MapToolbar,
-    MapCanvasComponent,
-    AnchorListPanel,
+    MapToolbarComponent,
+    AnchorListPanelComponent ,
+        MapCanvasComponent
   ],
   templateUrl: './viewing-page.html',
   styleUrls: ['./viewing-page.scss']

@@ -1,7 +1,20 @@
-<div class="map-container">
-  <!-- Replace with your real 3D viewer later -->
-  <img src="assets/images/mapview1.jpg" class="map-image">
+<div class="map-container" [class.fullscreen]="isFullscreen">
+  <!-- خريطة الصورة -->
+  <img #mapImage
+       src="assets/images/mapview1.jpg"
+       class="map-image"
+       (load)="onImageLoad()">
 
-  <!-- overlay anchors -->
- 
+  <!-- Overlay Anchors -->
+  <div *ngFor="let anchor of anchors" 
+       class="map-anchor"
+       [style.left.px]="getScaledX(anchor.position.x)"
+       [style.top.px]="getScaledY(anchor.position.y)">
+       
+    <img src="assets/icons/service-anchor.png" 
+         [alt]="anchor.name" 
+         [title]="anchor.name">
+         
+    <span>{{ anchor.name }}</span>
+  </div>
 </div>

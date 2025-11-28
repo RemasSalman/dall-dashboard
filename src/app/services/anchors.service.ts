@@ -36,4 +36,10 @@ export class AnchorsService {
     const anchorsRef = collection(this.firestore, 'anchors');
     return addDoc(anchorsRef, anchor);
   }
+
+
+
+
+  
+
 }

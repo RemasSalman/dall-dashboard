@@ -1,10 +1,10 @@
 <div class="sidebar-wrapper">
 
   <!-- ADD NEW BUTTON -->
-  <button class="add-new-btn">
-    <span class="plus-icon">＋</span>
-    Add New
-  </button>
+ <button class="add-new-btn" (click)="openAnchorDetails()">
+  <span class="plus-icon">＋</span>
+  Add New
+</button>
 
   <!-- =============== ANCHORS LIST =============== -->
   <div class="accordion-item">
@@ -69,6 +69,7 @@
     }
   </div>
 
+  
   <!-- =============== ANCHOR DETAILS =============== -->
   <div class="accordion-item">
 
@@ -210,11 +211,13 @@
           </div>
 
           <!-- Apply Button -->
-          <button
-            class="apply-btn"
-            (click)="onApply()">
-            Apply
-          </button>
+<button
+  class="apply-btn"
+  [disabled]="!isFormValid()"
+  [ngClass]="{'green-btn': isFormValid(), 'gray-btn': !isFormValid()}"
+  (click)="onApply()">
+  Apply
+</button>
 
         </div>
       </div>

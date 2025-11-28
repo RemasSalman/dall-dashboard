@@ -1,96 +1,113 @@
+/* Toolbar العام */
 .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #E5E7Eb;
-    padding: 10px 12px;
-    margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #E5E7Eb;
+  padding: 10px 12px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* LEFT SECTION -------------------------------------------------------- */
-
 .left-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-
-/* -------------------------------------------------------
-   Combined MAP SELECTOR (Matches Figma exactly)
-------------------------------------------------------- */
+/* Map Selector */
 .map-selector {
-    display: flex;
-    background: white;
-    border-radius: 6px;
-    border: 1px solid #CBD5E1;
-    overflow: hidden;
-    height: 40px;
-    width: 300px;
+  display: flex;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  overflow: hidden;
+  height: 40px;
+  width: 300px;
 }
 
-/* Left green label */
 .map-label {
-    background: #2B7A78;
-    /* Figma green */
-    color: white;
-    padding: 0 18px;
-    display: flex;
-    align-items: center;
-    font-family: Poppins;
-    font-size: 14px;
-    border-right: 1px solid #CBD5E1;
+  background: #2B7A78;
+  color: white;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  font-family: Poppins;
+  font-size: 14px;
+  border-right: 1px solid #CBD5E1;
 }
 
-/* Right dropdown container */
 .map-dropdown {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
 }
 
-/* Native select */
 .map-dropdown select {
-    appearance: none;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-family: Poppins;
-    font-size: 14px;
-    padding-right: 20px;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: Poppins;
+  font-size: 14px;
+  padding-right: 20px;
 }
 
-/* Chevron icon */
 .chevron {
-    position: absolute;
-    left: 210px;
-    font-size: 12px;
-    opacity: 0.4;
-    pointer-events: none;
-    top: 50%;
-    transform: translateY(-50%);
+  position: absolute;
+  left: 210px;
+  font-size: 12px;
+  opacity: 0.4;
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
 }
-
 
 /* RIGHT SECTION ------------------------------------------------------- */
-
 .right-section {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-
-
-/* Fullscreen button */
+/* زر التكبير */
 .fullscreen-button {
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #334155;
+  background: #2B7A78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.fullscreen-button:hover {
+  background: #3AA79B;
+}
+
+/* زر الخروج من fullscreen */
+.fullscreen-button-exit-container {
+  position: fixed;    /* ثابت على الشاشة */
+  top: 20px;          /* مسافة من أعلى الشاشة */
+  right: 20px;        /* مسافة من يمين الشاشة */
+  z-index: 9999;      /* فوق كل العناصر */
+}
+
+.fullscreen-button-exit {
+  background: #D64541;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.fullscreen-button-exit:hover {
+  background: #E74C3C;
 }

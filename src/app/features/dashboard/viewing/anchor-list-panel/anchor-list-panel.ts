@@ -10,7 +10,8 @@ import { AnchorsService, Anchor } from '../../../../services/anchors.service';
   templateUrl: './anchor-list-panel.html',
   styleUrls: ['./anchor-list-panel.scss']
 })
-export class AnchorListPanel implements OnInit {
+export class AnchorListPanelComponent implements OnInit {
+
 
   isAnchorsListOpen = false;
   isEditedAnchorsOpen = false;
@@ -30,16 +31,36 @@ export class AnchorListPanel implements OnInit {
 
   constructor(private anchorsService: AnchorsService) {}
 
+ 
+
   ngOnInit(): void {
-    this.anchorsService.getAnchors().subscribe((data) => {
-      this.anchors = data;
-    });
-  }
+  this.anchorsService.getAnchors().subscribe((data) => {
+    this.anchors = data;
+  });
+}
+
+
+
+isFormValid(): boolean {
+  const f = this.anchorForm;
+
+  const nonEmpty = (s: string | null | undefined) => (s ?? '').trim().length > 0;
+
+  return (
+    nonEmpty(f.name) &&
+    nonEmpty(f.type) &&
+    nonEmpty(f.description) &&
+    f.position.x !== 0 && f.position.y !== 0 && f.position.z !== 0 &&
+    f.scale.x !== 0 && f.scale.y !== 0 && f.scale.z !== 0 &&
+    f.rotation.x !== 0 && f.rotation.y !== 0 && f.rotation.z !== 0
+  );
+}
+
 
   onApply() {
-    // save to Firestore
+    if (!this.isFormValid()) return; 
+
     this.anchorsService.addAnchor(this.anchorForm).then(() => {
-      // reset form after saving
       this.anchorForm = {
         name: '',
         type: '',
@@ -50,6 +71,20 @@ export class AnchorListPanel implements OnInit {
       };
     });
   }
+
+  openAnchorDetails() {
+  this.isAnchorDetailsOpen = true;
+
+  // تهيئة النموذج إذا تبغين يبدأ فاضي
+  this.anchorForm = {
+    name: '',
+    type: '',
+    description: '',
+    position: { x: 0, y: 0, z: 0 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: 0, z: 0 }
+  };
+}
 
   toggleAnchorsList() {
     this.isAnchorsListOpen = !this.isAnchorsListOpen;

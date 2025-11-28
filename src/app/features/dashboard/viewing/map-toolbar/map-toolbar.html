@@ -1,30 +1,25 @@
 <div class="toolbar">
-
-    <div class="left-section">
-
-
-        <div class="map-selector">
-            <div class="map-label">Map</div>
-
-            <div class="map-dropdown">
-                <select>
-                    <option>Stadium – Section A</option>
-                </select>
-
-                <!-- use your own chevron icon -->
-                <img src="assets/icons/chevron.png" width="8" class="chevron">
-            </div>
-        </div>
-
+  <div class="left-section">
+    <div class="map-selector">
+      <div class="map-label">Map</div>
+      <div class="map-dropdown">
+        <select>
+          <option>Stadium – Section A</option>
+        </select>
+        <img src="assets/icons/chevron.png" width="8" class="chevron">
+      </div>
     </div>
+  </div>
 
-    <div class="right-section">
-
-
-
-        <!-- Fullscreen -->
-        <button class="fullscreen-button">⛶</button>
-
-    </div>
-
+  <div class="right-section">
+    @if (!isFullscreen) {
+      <button class="fullscreen-button" (click)="toggleFullscreen()">⛶</button>
+    }
+  </div>
 </div>
+
+@if (isFullscreen) {
+  <div class="fullscreen-exit-button-container">
+    <button class="fullscreen-button-exit" (click)="exitFullscreen()">❎ Exit</button>
+  </div>
+}

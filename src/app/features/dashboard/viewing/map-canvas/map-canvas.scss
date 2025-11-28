@@ -1,10 +1,21 @@
 .map-container {
   position: relative;
   width: 100%;
-  height: 800px;
+  height: 100%;  /* <- هذه تجعلها تملأ container الحالي فقط */
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid #d6d6d6;
+  transition: all 0.3s ease;
+
+  &.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;   /* <- كامل عرض الشاشة */
+    height: 100vh;  /* <- كامل ارتفاع الشاشة */
+    z-index: 9999;
+    border-radius: 0;
+  }
 }
 
 .map-image {
@@ -13,23 +24,28 @@
   object-fit: cover;
 }
 
-/* Anchor icons */
-.anchor {
+.map-anchor {
   position: absolute;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 
   img {
     width: 32px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   }
 
   span {
     margin-top: 4px;
-    background: white;
+    background: rgba(255,255,255,0.9);
     padding: 4px 8px;
     border-radius: 6px;
     font-size: 12px;
-  }
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  } 
 }
+  
+
