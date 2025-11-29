@@ -1,14 +1,18 @@
+// anchors.service.ts
 import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
   addDoc,
-  collectionData
+  collectionData,
+  query,
+  where
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';   // add BehaviorSubject
 
 export interface Anchor {
-  id?: string;             // Firestore doc ID when reading
+  id?: string;
+  mapId: string;
   name: string;
   type: string;
   description?: string;
@@ -18,28 +22,34 @@ export interface Anchor {
   rotation: { x: number; y: number; z: number };
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AnchorsService {
+
+  // NEW: last click position shared between map + panel
+  private lastClickPosSubject =
+    new BehaviorSubject<{ x: number; y: number } | null>(null);
+
+  lastClickPos$ = this.lastClickPosSubject.asObservable();
+
+  setLastClickPos(pos: { x: number; y: number } | null) {
+    this.lastClickPosSubject.next(pos);
+  }
 
   constructor(private firestore: Firestore) {}
 
-  // READ from Firestore
   getAnchors(): Observable<Anchor[]> {
     const anchorsRef = collection(this.firestore, 'anchors');
     return collectionData(anchorsRef, { idField: 'id' }) as Observable<Anchor[]>;
   }
 
-  // WRITE to Firestore
+  getAnchorsByMap(mapId: string): Observable<Anchor[]> {
+    const anchorsRef = collection(this.firestore, 'anchors');
+    const q = query(anchorsRef, where('mapId', '==', mapId));
+    return collectionData(q, { idField: 'id' }) as Observable<Anchor[]>;
+  }
+
   addAnchor(anchor: Anchor) {
     const anchorsRef = collection(this.firestore, 'anchors');
     return addDoc(anchorsRef, anchor);
   }
-
-
-
-
-  
-
 }

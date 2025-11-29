@@ -1,20 +1,30 @@
-<div class="map-container" [class.fullscreen]="isFullscreen">
-  <!-- خريطة الصورة -->
+<div class="map-container"
+     [class.fullscreen]="isFullscreen"
+     (click)="onMapClick($event)">
+
   <img #mapImage
-       src="assets/images/mapview1.jpg"
+       [src]="imageUrl || 'assets/images/VIP_S.jpg'"
        class="map-image"
        (load)="onImageLoad()">
 
-  <!-- Overlay Anchors -->
-  <div *ngFor="let anchor of anchors" 
+  <!-- Saved anchors from Firestore -->
+  <div *ngFor="let anchor of anchors"
        class="map-anchor"
        [style.left.px]="getScaledX(anchor.position.x)"
        [style.top.px]="getScaledY(anchor.position.y)">
-       
-    <img src="assets/icons/service-anchor.png" 
-         [alt]="anchor.name" 
+    <img src="assets/icons/service-anchor.png"
+         [alt]="anchor.name"
          [title]="anchor.name">
-         
     <span>{{ anchor.name }}</span>
+  </div>
+
+  <!-- 🔥 Preview anchor shown immediately after click -->
+  <div *ngIf="previewPos"
+       class="map-anchor"
+       [style.left.px]="getScaledX(previewPos.x)"
+       [style.top.px]="getScaledY(previewPos.y)">
+    <img src="assets/icons/service-anchor.png"
+         alt="New anchor"
+         title="New anchor">
   </div>
 </div>
