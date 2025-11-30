@@ -3,7 +3,7 @@
      (click)="onMapClick($event)">
 
   <img #mapImage
-       [src]="imageUrl || 'assets/images/VIP_S.jpg'"
+       [src]="imageUrl || 'assets/images/mapview1.jpg'"
        class="map-image"
        (load)="onImageLoad()">
 
@@ -18,7 +18,7 @@
     <span>{{ anchor.name }}</span>
   </div>
 
-  <!-- 🔥 Preview anchor shown immediately after click -->
+  <!-- Preview anchor shown immediately after click -->
   <div *ngIf="previewPos"
        class="map-anchor"
        [style.left.px]="getScaledX(previewPos.x)"
