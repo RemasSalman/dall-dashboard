@@ -17,6 +17,11 @@ export class MapToolbarComponent implements OnInit {
   currentMapId: string = '';
   currentMapData: MapData | null = null;
 
+  // Modal Variables
+  showModal = false;         // Naming Modal
+  showSuccessModal = false;  // Success Modal
+  pendingFile: File | null = null;
+
   @Output() mapSelected = new EventEmitter<MapData | null>();
 
   constructor(
@@ -29,7 +34,6 @@ export class MapToolbarComponent implements OnInit {
 
     this.mapsService.getMaps().subscribe(data => {
       this.maps = data;
-      // اختيار أول خريطة تلقائياً
       if (this.maps.length > 0 && !this.currentMapId) {
         this.selectMap(this.maps[0]);
       } else if (this.maps.length === 0) {
@@ -52,19 +56,39 @@ export class MapToolbarComponent implements OnInit {
     this.mapSelected.emit(map); 
   }
 
-  async onFileSelected(event: any) {
+  // 1. File Selection
+  onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      const mapName = prompt('Enter map name:', file.name.split('.')[0]);
-      if (mapName) {
-        try {
-          await this.mapsService.uploadMap(file, mapName);
-          alert('Map saved!');
-        } catch (error: any) {
-          alert(error.message);
-        }
-      }
+      this.pendingFile = file;
+      this.showModal = true; 
+      event.target.value = '';
     }
+  }
+
+  // 2. Save Action
+  async onSaveMap(nameInput: string) {
+    if (!nameInput || !this.pendingFile) return;
+
+    try {
+      await this.mapsService.uploadMap(this.pendingFile, nameInput);
+      
+      // Close input modal and open success modal
+      this.closeModal(); 
+      this.showSuccessModal = true; 
+
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.pendingFile = null;
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
   }
 
   async onDeleteMap() {

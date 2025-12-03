@@ -1,4 +1,6 @@
-/* General Toolbar */
+/* =========================================
+   1. GENERAL TOOLBAR LAYOUT
+   ========================================= */
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -11,14 +13,16 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* LEFT SECTION -------------------------------------------------------- */
+/* =========================================
+   2. LEFT SECTION (Map Selector & Actions)
+   ========================================= */
 .left-section {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Map Selector */
+/* --- Map Selector Component --- */
 .map-selector {
   display: flex;
   background: white;
@@ -26,51 +30,50 @@
   border: 1px solid #CBD5E1;
   overflow: hidden;
   height: 40px;
-  width: 300px; 
+  width: 300px;
+
+  .map-label {
+    background: #2B7A78;
+    color: white;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    border-right: 1px solid #CBD5E1;
+  }
+
+  .map-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    flex: 1;
+
+    select {
+      appearance: none;
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      padding-right: 20px;
+    }
+
+    .chevron {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
 }
 
-.map-label {
-  background: #2B7A78;
-  color: white;
-  padding: 0 18px;
-  display: flex;
-  align-items: center;
-  font-family: Poppins, sans-serif;
-  font-size: 14px;
-  border-right: 1px solid #CBD5E1;
-}
-
-.map-dropdown {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  flex: 1;
-}
-
-.map-dropdown select {
-  appearance: none;
-  width: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: Poppins, sans-serif;
-  font-size: 14px;
-  padding-right: 20px;
-}
-
-/* --- Chevron Correction --- */
-.chevron {
-  position: absolute;
-  right: 12px; 
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* --- New Buttons Styles --- */
+/* --- Action Buttons (Add & Delete) --- */
 .action-btn {
   height: 40px;
   padding: 0 14px;
@@ -81,42 +84,44 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-family: Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 13px;
   transition: all 0.2s;
+
+  &.add-btn {
+    background: #2abbac;
+    color: white;
+
+    &:hover {
+      background: #249d94;
+    }
+  }
+
+  &.delete-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 0 12px;
+
+    &:hover {
+      background: #fecaca;
+    }
+  }
+
+  .plus-icon {
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 
-.add-btn {
-  background: #2abbac;
-  color: white;
-}
-.add-btn:hover {
-  background: #249d94;
-}
-
-.delete-btn {
-  background: #fee2e2;
-  color: #dc2626;
-  padding: 0 12px;
-}
-.delete-btn:hover {
-  background: #fecaca;
-}
-
-.plus-icon {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-
-/* RIGHT SECTION ------------------------------------------------------- */
+/* =========================================
+   3. RIGHT SECTION (Fullscreen)
+   ========================================= */
 .right-section {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
-/* Fullscreen Button */
 .fullscreen-button {
   background: #2B7A78;
   color: white;
@@ -125,13 +130,12 @@
   padding: 6px 10px;
   font-size: 16px;
   cursor: pointer;
+
+  &:hover {
+    background: #3AA79B;
+  }
 }
 
-.fullscreen-button:hover {
-  background: #3AA79B;
-}
-
-/* Exit Fullscreen Button */
 .fullscreen-button-exit-container {
   position: fixed;
   top: 20px;
@@ -147,9 +151,145 @@
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: #E74C3C;
+  }
 }
 
-.fullscreen-button-exit:hover {
-  background: #E74C3C;
+/* =========================================
+   4. MODAL STYLES (Popup Window)
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+.modal-box {
+  background: white;
+  width: 400px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  animation: slideDown 0.3s ease-out;
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .modal-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #2abbac;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+
+    button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .btn-cancel {
+      background: white;
+      border: 1px solid #cbd5e1;
+      color: #64748b;
+    }
+
+    .btn-save {
+      background: #2abbac;
+      border: none;
+      color: white;
+      padding: 8px 20px;
+
+      &:hover {
+        background: #249d94;
+      }
+    }
+  }
+}
+
+/* =========================================
+   5. SUCCESS MODAL STYLES
+   ========================================= */
+.success-box {
+  align-items: center; /* Center Content */
+  text-align: center;
+  width: 320px;
+}
+
+.success-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  background: #dcfce7; /* Light Green Background */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.checkmark {
+  color: #22c55e; /* Green Icon Color */
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.modal-desc {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+.center-action {
+  width: 100%;
+  justify-content: center;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

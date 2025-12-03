@@ -1,7 +1,7 @@
 <div class="toolbar">
   <div class="left-section">
     <button class="action-btn add-btn" (click)="fileInput.click()">
-      <span>＋</span> Add Map
+      <span class="plus-icon">＋</span> Add Map
     </button>
     <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*">
 
@@ -30,4 +30,30 @@
 
 <div *ngIf="isFullscreen" class="fullscreen-exit-button-container">
   <button class="fullscreen-button-exit" (click)="exitFullscreen()">❎ Exit</button>
+</div>
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-box">
+    <h3 class="modal-title">Name Your Map</h3>
+    <input #nameInput type="text" class="modal-input" placeholder="Ex: Main Stadium, Section A...">
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-save" (click)="onSaveMap(nameInput.value)">Save Map</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showSuccessModal">
+  <div class="modal-box success-box">
+    <div class="success-icon-wrapper">
+      <span class="checkmark">✔</span>
+    </div>
+    
+    <h3 class="modal-title">Success!</h3>
+    <p class="modal-desc">Map has been uploaded successfully.</p>
+
+    <div class="modal-actions center-action">
+      <button class="btn-save full-width" (click)="closeSuccessModal()">Great!</button>
+    </div>
+  </div>
 </div>
