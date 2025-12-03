@@ -1,20 +1,20 @@
 <div class="page-wrapper">
-
     <div class="toolbar-area">
-        <app-map-toolbar></app-map-toolbar>
+        <app-map-toolbar (mapSelected)="currentMap = $event"></app-map-toolbar>
     </div>
 
     <div class="viewing-container">
-
         <div class="map-area">
-            <app-map-canvas></app-map-canvas>
+            <app-map-canvas 
+                [imageUrl]="currentMap?.imageUrl"
+                [mapId]="currentMap?.id || 'default'">
+            </app-map-canvas>
         </div>
 
         <div class="sidebar-area">
-            <app-anchor-list-panel></app-anchor-list-panel>
+            <app-anchor-list-panel 
+                [mapId]="currentMap?.id || 'default'">
+            </app-anchor-list-panel>
         </div>
-
     </div>
-
-
 </div>

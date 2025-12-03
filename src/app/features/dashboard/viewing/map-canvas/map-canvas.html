@@ -1,30 +1,21 @@
-<div class="map-container"
-     [class.fullscreen]="isFullscreen"
-     (click)="onMapClick($event)">
-
+<div class="map-container" [class.fullscreen]="isFullscreen" (click)="onMapClick($event)">
   <img #mapImage
-       [src]="imageUrl || 'assets/images/mapview1.jpg'"
+       [src]="imageUrl || 'assets/images/my-new-map.jpg'" 
        class="map-image"
        (load)="onImageLoad()">
 
-  <!-- Saved anchors from Firestore -->
   <div *ngFor="let anchor of anchors"
        class="map-anchor"
        [style.left.px]="getScaledX(anchor.position.x)"
        [style.top.px]="getScaledY(anchor.position.y)">
-    <img src="assets/icons/service-anchor.png"
-         [alt]="anchor.name"
-         [title]="anchor.name">
+    <img src="assets/icons/service-anchor.png" [alt]="anchor.name" [title]="anchor.name">
     <span>{{ anchor.name }}</span>
   </div>
 
-  <!-- Preview anchor shown immediately after click -->
   <div *ngIf="previewPos"
        class="map-anchor"
        [style.left.px]="getScaledX(previewPos.x)"
        [style.top.px]="getScaledY(previewPos.y)">
-    <img src="assets/icons/service-anchor.png"
-         alt="New anchor"
-         title="New anchor">
+    <img src="assets/icons/service-anchor.png" alt="New anchor">
   </div>
 </div>
