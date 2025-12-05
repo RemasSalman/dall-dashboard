@@ -22,6 +22,9 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   anchors: Anchor[] = [];
   isAnchorsListOpen = false;
   isAnchorDetailsOpen = false;
+
+  isDeleteConfirmOpen = false;
+  anchorToDelete: Anchor | null = null;
   
   anchorForm: AnchorForm = {
     name: '', type: '', description: '',
@@ -33,12 +36,46 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   constructor(private anchorsService: AnchorsService) {}
 
   ngOnInit(): void {
-    this.anchorsService.lastClickPos$.subscribe(pos => {
-      if (!pos) return;
-      this.isAnchorDetailsOpen = true;
-      this.anchorForm = { ...this.anchorForm, position: { x: pos.x, y: pos.y, z: 0 } };
+  this.anchorsService.getAnchorsByMap(this.mapId)
+    .subscribe((data: Anchor[]) => {
+      this.anchors = data;
     });
-  }
+
+  this.anchorsService.lastClickPos$
+  .subscribe(pos => {
+    if (!pos) return;
+
+    this.isAnchorDetailsOpen = true;
+
+  
+    this.anchorForm = {
+      name: '',
+      type: '',
+      description: '',
+      position: { x: pos.x, y: pos.y, z: 0 },
+      scale: { x: 1, y: 1, z: 1 },
+      rotation: { x: 0, y: 0, z: 0 }
+    };
+  });
+
+
+  this.anchorsService.selectedAnchor$
+  .subscribe((anchor: Anchor | null) => {
+    if (!anchor) return;
+
+    this.isAnchorDetailsOpen = true;
+
+    this.anchorForm = {
+      name:        anchor.name ?? '',
+      type:        anchor.type ?? '',
+      description: anchor.description ?? '',
+      position:    anchor.position ?? { x: 0, y: 0, z: 0 },
+      scale:       anchor.scale ?? { x: 1, y: 1, z: 1 },
+      rotation:    anchor.rotation ?? { x: 0, y: 0, z: 0 }
+    };
+  });
+
+}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mapId'] && this.mapId) {
@@ -77,4 +114,37 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   openAnchorDetails() { this.isAnchorDetailsOpen = true; }
   toggleAnchorsList() { this.isAnchorsListOpen = !this.isAnchorsListOpen; }
   toggleAnchorDetails() { this.isAnchorDetailsOpen = !this.isAnchorDetailsOpen; }
+
+    onDeleteClick(anchor: Anchor, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation(); 
+    }
+    this.anchorToDelete = anchor;
+    this.isDeleteConfirmOpen = true;
+  }
+
+  cancelDelete(): void {
+    this.isDeleteConfirmOpen = false;
+    this.anchorToDelete = null;
+  }
+
+  confirmDelete(): void {
+    if (!this.anchorToDelete || !this.anchorToDelete.id) {
+      this.cancelDelete();
+      return;
+    }
+
+    this.anchorsService.deleteAnchor(this.anchorToDelete.id)
+      .then(() => {
+        this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
+        this.cancelDelete();
+
+        this.isAnchorDetailsOpen = false;
+      })
+      .catch(err => {
+        console.error('Error deleting anchor:', err);
+        this.cancelDelete();
+      });
+  }
+
 }

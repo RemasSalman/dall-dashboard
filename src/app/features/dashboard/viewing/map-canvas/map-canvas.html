@@ -6,12 +6,16 @@
        (load)="onImageLoad()">
 
   <div *ngFor="let anchor of anchors"
-       class="map-anchor"
-       [style.left.px]="getScaledX(anchor.position.x)"
-       [style.top.px]="getScaledY(anchor.position.y)">
-    <img src="assets/icons/service-anchor.png" [alt]="anchor.name" [title]="anchor.name">
-    <span>{{ anchor.name }}</span>
-  </div>
+     class="map-anchor"
+     [style.left.px]="getScaledX(anchor.position.x)"
+     [style.top.px]="getScaledY(anchor.position.y)"
+     (click)="onAnchorClick($event, anchor)">
+  <img src="assets/icons/service-anchor.png"
+       [alt]="anchor.name"
+       [title]="anchor.name">
+  <span>{{ anchor.name }}</span>
+</div>
+
 
   <div *ngIf="previewPos"
        class="map-anchor"

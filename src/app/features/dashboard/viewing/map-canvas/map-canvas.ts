@@ -63,11 +63,34 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
   getScaledX(x: number): number { return x * this.displayWidth; }
   getScaledY(y: number): number { return y * this.displayHeight; }
 
-  onMapClick(event: MouseEvent): void {
-    if (!this.mapImage) return;
-    const rect = this.mapImage.nativeElement.getBoundingClientRect();
-    const x = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
-    const y = Math.min(Math.max((event.clientY - rect.top) / rect.height, 0), 1);
-    this.anchorsService.setLastClickPos({ x, y });
+ onMapClick(event: MouseEvent): void {
+  if (!this.mapImage) return;
+
+  const target = event.target as HTMLElement;
+
+  if (target.closest('.map-anchor')) {
+    return;
   }
+
+  const rect = this.mapImage.nativeElement.getBoundingClientRect();
+  const xNorm = (event.clientX - rect.left) / rect.width;
+  const yNorm = (event.clientY - rect.top) / rect.height;
+
+  const x = Math.min(Math.max(xNorm, 0), 1);
+  const y = Math.min(Math.max(yNorm, 0), 1);
+
+  this.anchorsService.setSelectedAnchor(null);
+  this.anchorsService.setLastClickPos({ x, y });
 }
+
+
+  onAnchorClick(event: MouseEvent, anchor: Anchor): void {
+  event.stopPropagation();
+
+  this.anchorsService.setLastClickPos(null);
+  this.anchorsService.setSelectedAnchor(anchor);
+}
+
+
+}
+
