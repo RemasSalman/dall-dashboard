@@ -1,25 +1,59 @@
 <div class="toolbar">
   <div class="left-section">
+    <button class="action-btn add-btn" (click)="fileInput.click()">
+      <span class="plus-icon">＋</span> Add Map
+    </button>
+    <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*">
+
     <div class="map-selector">
       <div class="map-label">Map</div>
       <div class="map-dropdown">
-        <select>
-          <option>Stadium – Section A</option>
+        <select (change)="onMapChange($event)">
+          <option *ngIf="maps.length === 0" disabled>No maps</option>
+          <option *ngFor="let map of maps" [value]="map.id" [selected]="map.id === currentMapId">
+            {{ map.name }}
+          </option>
         </select>
         <img src="assets/icons/chevron.png" width="8" class="chevron">
       </div>
     </div>
+
+    <button *ngIf="currentMapId" class="action-btn delete-btn" (click)="onDeleteMap()">
+      🗑️
+    </button>
   </div>
 
   <div class="right-section">
-    @if (!isFullscreen) {
-      <button class="fullscreen-button" (click)="toggleFullscreen()">⛶</button>
-    }
+    <button *ngIf="!isFullscreen" class="fullscreen-button" (click)="toggleFullscreen()">⛶</button>
   </div>
 </div>
 
-@if (isFullscreen) {
-  <div class="fullscreen-exit-button-container">
-    <button class="fullscreen-button-exit" (click)="exitFullscreen()">❎ Exit</button>
+<div *ngIf="isFullscreen" class="fullscreen-exit-button-container">
+  <button class="fullscreen-button-exit" (click)="exitFullscreen()">❎ Exit</button>
+</div>
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-box">
+    <h3 class="modal-title">Name Your Map</h3>
+    <input #nameInput type="text" class="modal-input" placeholder="Ex: Main Stadium, Section A...">
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-save" (click)="onSaveMap(nameInput.value)">Save Map</button>
+    </div>
   </div>
-}
+</div>
+
+<div class="modal-overlay" *ngIf="showSuccessModal">
+  <div class="modal-box success-box">
+    <div class="success-icon-wrapper">
+      <span class="checkmark">✔</span>
+    </div>
+    
+    <h3 class="modal-title">Success!</h3>
+    <p class="modal-desc">Map has been uploaded successfully.</p>
+
+    <div class="modal-actions center-action">
+      <button class="btn-save full-width" (click)="closeSuccessModal()">Great!</button>
+    </div>
+  </div>
+</div>

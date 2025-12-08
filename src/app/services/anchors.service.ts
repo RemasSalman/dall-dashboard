@@ -6,7 +6,9 @@ import {
   addDoc,
   collectionData,
   query,
-  where
+  where,
+  doc,
+  deleteDoc
 } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';   // add BehaviorSubject
 
@@ -34,7 +36,16 @@ export class AnchorsService {
   setLastClickPos(pos: { x: number; y: number } | null) {
     this.lastClickPosSubject.next(pos);
   }
+//......
+ private selectedAnchorSubject =
+    new BehaviorSubject<Anchor | null>(null);
 
+  selectedAnchor$ = this.selectedAnchorSubject.asObservable();
+
+  setSelectedAnchor(anchor: Anchor | null) {
+    this.selectedAnchorSubject.next(anchor);
+  }
+  //........
   constructor(private firestore: Firestore) {}
 
   getAnchors(): Observable<Anchor[]> {
@@ -52,4 +63,10 @@ export class AnchorsService {
     const anchorsRef = collection(this.firestore, 'anchors');
     return addDoc(anchorsRef, anchor);
   }
+
+  deleteAnchor(anchorId: string): Promise<void> {
+  const ref = doc(this.firestore, 'anchors', anchorId);
+  return deleteDoc(ref);
+}
+
 }

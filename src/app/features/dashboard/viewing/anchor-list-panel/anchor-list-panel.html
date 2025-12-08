@@ -1,10 +1,10 @@
 <div class="sidebar-wrapper">
 
   <!-- ADD NEW BUTTON -->
- <button class="add-new-btn" (click)="openAnchorDetails()">
-  <span class="plus-icon">＋</span>
-  Add New
-</button>
+  <button class="add-new-btn" (click)="openAnchorDetails()">
+    <span class="plus-icon">＋</span>
+    Add New
+  </button>
 
   <!-- =============== ANCHORS LIST =============== -->
   <div class="accordion-item">
@@ -16,7 +16,6 @@
       </div>
 
       <div class="count-box">
-        <!-- dynamic count from Firestore -->
         <span class="value">{{ anchors.length }}</span>/<span class="total">30</span>
       </div>
 
@@ -39,9 +38,18 @@
           <ul class="anchor-list">
             @for (anchor of anchors; track anchor.id) {
               @if (anchor.type === 'Navigation') {
+
                 <li class="anchor-row">
-                  <span>{{ anchor.name }}</span>
+                  <span class="anchor-name">{{ anchor.name }}</span>
+
+                  <button
+                    type="button"
+                    class="anchor-delete-btn"
+                    (click)="onDeleteClick(anchor, $event)">
+                    🗑
+                  </button>
                 </li>
+
               }
             }
           </ul>
@@ -57,9 +65,19 @@
           <ul class="anchor-list">
             @for (anchor of anchors; track anchor.id) {
               @if (anchor.type === 'Service') {
+
                 <li class="anchor-row">
-                  <span>{{ anchor.name }}</span>
+                  <span class="anchor-name">{{ anchor.name }}</span>
+
+            
+                  <button
+                    type="button"
+                    class="anchor-delete-btn"
+                    (click)="onDeleteClick(anchor, $event)">
+                    🗑
+                  </button>
                 </li>
+
               }
             }
           </ul>
@@ -69,6 +87,29 @@
     }
   </div>
 
+  @if (isDeleteConfirmOpen) {
+    <div class="delete-modal-backdrop">
+      <div class="delete-modal">
+        <h3>Delete this anchor?</h3>
+        <p>
+          After deleting this anchor, it will be removed from the stadium map
+          and will no longer appear in the end-user mobile app.
+        </p>
+
+        <div class="delete-modal-actions">
+          <button type="button" class="btn-cancel" (click)="cancelDelete()">
+            Cancel
+          </button>
+
+          <button type="button" class="btn-delete" (click)="confirmDelete()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
   
   <!-- =============== ANCHOR DETAILS =============== -->
   <div class="accordion-item">
@@ -224,4 +265,4 @@
     }
   </div>
 
-</div>
+
