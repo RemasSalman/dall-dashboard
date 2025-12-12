@@ -21,7 +21,9 @@ export class MapsService {
   }
 
   async uploadMap(file: File, mapName: string): Promise<void> {
-    // شرط الحجم: أقل من 1 ميجا
+  if (!file.type.startsWith('image/')) {
+    throw new Error('The file must be an image only');
+  }
     if (file.size > 1048576) { 
       throw new Error('Image is too large! Please choose an image smaller than 1MB.');
     }
