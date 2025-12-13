@@ -36,46 +36,43 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   constructor(private anchorsService: AnchorsService) {}
 
   ngOnInit(): void {
-  this.anchorsService.getAnchorsByMap(this.mapId)
-    .subscribe((data: Anchor[]) => {
-      this.anchors = data;
-    });
+    this.anchorsService.getAnchorsByMap(this.mapId)
+      .subscribe((data: Anchor[]) => {
+        this.anchors = data;
+      });
 
-  this.anchorsService.lastClickPos$
-  .subscribe(pos => {
-    if (!pos) return;
+    this.anchorsService.lastClickPos$
+      .subscribe(pos => {
+        if (!pos) return;
 
-    this.isAnchorDetailsOpen = true;
+        this.isAnchorDetailsOpen = true;
 
-  
-    this.anchorForm = {
-      name: '',
-      type: '',
-      description: '',
-      position: { x: pos.x, y: pos.y, z: 0 },
-      scale: { x: 1, y: 1, z: 1 },
-      rotation: { x: 0, y: 0, z: 0 }
-    };
-  });
+        this.anchorForm = {
+          name: '',
+          type: '',
+          description: '',
+          position: { x: pos.x, y: pos.y, z: 0 },
+          scale: { x: 1, y: 1, z: 1 },
+          rotation: { x: 0, y: 0, z: 0 }
+        };
+      });
 
+    this.anchorsService.selectedAnchor$
+      .subscribe((anchor: Anchor | null) => {
+        if (!anchor) return;
 
-  this.anchorsService.selectedAnchor$
-  .subscribe((anchor: Anchor | null) => {
-    if (!anchor) return;
+        this.isAnchorDetailsOpen = true;
 
-    this.isAnchorDetailsOpen = true;
-
-    this.anchorForm = {
-      name:        anchor.name ?? '',
-      type:        anchor.type ?? '',
-      description: anchor.description ?? '',
-      position:    anchor.position ?? { x: 0, y: 0, z: 0 },
-      scale:       anchor.scale ?? { x: 1, y: 1, z: 1 },
-      rotation:    anchor.rotation ?? { x: 0, y: 0, z: 0 }
-    };
-  });
-
-}
+        this.anchorForm = {
+          name:        anchor.name ?? '',
+          type:        anchor.type ?? '',
+          description: anchor.description ?? '',
+          position:    anchor.position ?? { x: 0, y: 0, z: 0 },
+          scale:       anchor.scale ?? { x: 1, y: 1, z: 1 },
+          rotation:    anchor.rotation ?? { x: 0, y: 0, z: 0 }
+        };
+      });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mapId'] && this.mapId) {
@@ -84,21 +81,39 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   }
 
   loadAnchors() {
-    this.anchorsService.getAnchorsByMap(this.mapId).subscribe(data => this.anchors = data);
+    this.anchorsService.getAnchorsByMap(this.mapId)
+      .subscribe(data => this.anchors = data);
   }
 
-  isFormValid(): boolean { return !!(this.anchorForm.name && this.anchorForm.type); }
+  isFormValid(): boolean {
+    return !!(
+      this.anchorForm.name &&
+      this.anchorForm.type &&
+      this.anchorForm.name.length <= 50
+
+    );
+  }
 
   onApply(): void {
-    if (!this.isFormValid()) { alert('Fill all fields'); return; }
+    if (!this.anchorForm.name || !this.anchorForm.type) {
+      alert('Fill all required fields');
+      return;
+    }
+
+    if (this.anchorForm.name.length > 30) {
+      alert('Name cannot exceed 30 characters');
+      return;
+    }
+
     const toSave: Anchor = {
       mapId: this.mapId,
       ...this.anchorForm
     };
+
     this.anchorsService.addAnchor(toSave).then(() => {
-        this.resetForm();
-        this.isAnchorDetailsOpen = false;
-        this.anchorsService.setLastClickPos(null);
+      this.resetForm();
+      this.isAnchorDetailsOpen = false;
+      this.anchorsService.setLastClickPos(null);
     });
   }
 
@@ -115,7 +130,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   toggleAnchorsList() { this.isAnchorsListOpen = !this.isAnchorsListOpen; }
   toggleAnchorDetails() { this.isAnchorDetailsOpen = !this.isAnchorDetailsOpen; }
 
-    onDeleteClick(anchor: Anchor, event?: MouseEvent): void {
+  onDeleteClick(anchor: Anchor, event?: MouseEvent): void {
     if (event) {
       event.stopPropagation(); 
     }
@@ -138,7 +153,6 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
       .then(() => {
         this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
         this.cancelDelete();
-
         this.isAnchorDetailsOpen = false;
       })
       .catch(err => {
@@ -146,5 +160,4 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
         this.cancelDelete();
       });
   }
-
 }

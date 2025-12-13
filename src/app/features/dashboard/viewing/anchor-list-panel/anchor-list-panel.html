@@ -139,6 +139,10 @@
             name="anchorName"
             [(ngModel)]="anchorForm.name">
 
+            <div *ngIf="anchorForm.name && anchorForm.name.length > 50" class="error-text">
+  Name cannot exceed 50 characters.
+</div>
+
           <!-- Anchor Type -->
           <label class="form-label">Anchor Type</label>
           <div class="select-box">
