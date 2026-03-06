@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AnchorsService, Anchor } from '../../../../services/anchors.service';
 
 interface AnchorForm {
-  name: string; type: string; description: string;
+  qrId: string; name: string; type: string; description: string;
   position: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
@@ -27,6 +27,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   anchorToDelete: Anchor | null = null;
   
   anchorForm: AnchorForm = {
+    qrId: '',
     name: '', type: '', description: '',
     position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
@@ -48,6 +49,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
         this.isAnchorDetailsOpen = true;
 
         this.anchorForm = {
+          qrId: '',
           name: '',
           type: '',
           description: '',
@@ -64,6 +66,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
         this.isAnchorDetailsOpen = true;
 
         this.anchorForm = {
+          qrId:        anchor.qrId ?? '',
           name:        anchor.name ?? '',
           type:        anchor.type ?? '',
           description: anchor.description ?? '',
@@ -119,6 +122,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
   resetForm() {
     this.anchorForm = {
+      qrId: '',
       name: '', type: '', description: '',
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 1, y: 1, z: 1 },

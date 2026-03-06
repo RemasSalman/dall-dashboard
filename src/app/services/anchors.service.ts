@@ -13,6 +13,7 @@ import {
 import { Observable, BehaviorSubject } from 'rxjs';   // add BehaviorSubject
 
 export interface Anchor {
+  qrId: string;
   id?: string;
   mapId: string;
   name: string;

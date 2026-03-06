@@ -131,6 +131,17 @@
         <div class="details-form">
 
           <!-- Anchor Name -->
+           <label class="form-label">QR Code Content (ID)</label>
+        <input
+          type="text"
+          class="form-input"
+          placeholder="e.g. Room_101 or Gate_A"
+          name="qrId"
+          [(ngModel)]="anchorForm.qrId">
+        <small style="color: #666; font-size: 11px; margin-bottom: 10px; display: block;">
+          This text must match the content of the printed QR code.
+        </small>
+        
           <label class="form-label">Anchor Name</label>
           <input
             type="text"
