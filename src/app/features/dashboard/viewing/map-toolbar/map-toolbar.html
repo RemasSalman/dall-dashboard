@@ -1,0 +1,60 @@
+<div class="toolbar-main-container">
+  <div class="toolbar-inner-content">
+    
+    <div class="branding-section">
+      <img src="assets/logo.png" alt="Logo" class="app-logo-img">
+      <span class="app-title-text">Dall Dashboard</span>
+    </div>
+
+    <div class="main-actions-group glass-panel">
+  
+  <button class="modern-btn" (click)="fileInput.click()">
+    <span class="plus-sign">＋</span> Add Map
+  </button>
+  <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*">
+
+  <div class="modern-selector-box">
+    <label>Map Section</label>
+    <div class="dropdown-wrapper">
+      <select (change)="onMapChange($event)">
+        <option *ngFor="let map of maps" [value]="map.id">{{ map.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <button *ngIf="currentMapId" class="modern-btn delete-variant" (click)="onDeleteMap()">
+    🗑️ Delete
+  </button>
+
+</div>
+
+    <div class="user-account-section">
+      <button class="sign-out-action" (click)="onSignOut()">
+        <span class="user-avatar-icon"></span> Sign Out
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-box">
+    <h3 class="modal-title">Name Your Map</h3>
+    <input #nameInput type="text" class="modal-input" placeholder="Ex: Main Stadium...">
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-save" (click)="onSaveMap(nameInput.value)">Save Map</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showSuccessModal">
+  <div class="modal-box success-box">
+    <div class="success-icon-wrapper"><span class="checkmark">✔</span></div>
+    <h3 class="modal-title">Success!</h3>
+    <p class="modal-desc">Map has been uploaded successfully.</p>
+    <div class="modal-actions center-action">
+      <button class="btn-save full-width" (click)="closeSuccessModal()">Great!</button>
+    </div>
+  </div>
+</div>

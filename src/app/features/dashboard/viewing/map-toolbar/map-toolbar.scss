@@ -1,0 +1,320 @@
+/* =========================================
+   1. GENERAL TOOLBAR LAYOUT
+   ========================================= */
+.toolbar-main-container {
+  padding: 10px 20px;
+  background-color: transparent; 
+}
+
+.toolbar-inner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.106); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px; 
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  padding: 8px 24px;
+  height: 60px;
+  box-shadow: 0 8px 32px 0 rgba(73, 67, 67, 0.188);
+}
+
+/* =========================================
+   2. LEFT SECTION (Branding & Actions)
+   ========================================= */
+.branding-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 20px;
+
+  .app-logo-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+
+  .app-title-text {
+    
+    font-family: 'Poppins', 'Segoe UI', sans-serif; 
+    font-weight: 300; 
+    font-size: 22px; 
+    color: #1e293b; 
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+}
+
+.main-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 20px;
+  margin: 0 auto; 
+  flex: none; 
+
+  background: rgba(255, 255, 255, 0.4); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Modern Map Selector (تم التوسيع هنا) --- */
+.modern-selector-box {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5); 
+  border-radius: 8px;
+  border: 1px solid rgba(203, 213, 225, 0.5);
+  height: 36px;
+  overflow: hidden;
+  /* التعديل: زيادة العرض الإجمالي للبوكس */
+  min-width: 280px; 
+
+  label {
+    background: transparent;
+    color: #64748b;
+    padding: 0 15px; /* زيادة التباعد قليلاً */
+    font-size: 11px;
+    font-weight: 500;
+    border-right: 1px solid rgba(203, 213, 225, 0.5);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+  }
+
+  .dropdown-wrapper {
+    position: relative;
+    padding: 0 30px 0 12px;
+    display: flex;
+    align-items: center;
+    flex: 1; /* جعل منطقة الاختيار تأخذ باقي المساحة */
+
+    select {
+      appearance: none;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+      cursor: pointer;
+      width: 100%; /* جعل السيلكت يملأ المساحة الجديدة */
+    }
+
+    .chevron-icon-custom {
+      position: absolute;
+      right: 10px;
+      font-size: 8px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+  }
+}
+
+/* --- Modern Action Buttons --- */
+.modern-btn {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.7); 
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: all 0.2s;
+  color: #334155;
+
+  &:hover {
+    background: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .plus-sign {
+    color: #2abbac;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  &.delete-variant {
+    color: #ef4444;
+    &:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+  }
+}
+
+/* =========================================
+   3. RIGHT SECTION (Account/Sign Out)
+   ========================================= */
+.user-account-section {
+  display: flex;
+  align-items: center;
+}
+
+.sign-out-action {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(171, 184, 181, 0.408);
+    color: #2b2b2b;
+  }
+
+  .user-avatar-icon {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   4. MODAL STYLES (Popup Window)
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.5); 
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: white;
+  width: 400px;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  animation: slideDown 0.3s ease-out;
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .modal-input {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #2abbac;
+      box-shadow: 0 0 0 3px rgba(42, 187, 172, 0.1);
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+
+    button {
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .btn-cancel {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      color: #64748b;
+      &:hover { background: #f1f5f9; }
+    }
+
+    .btn-save {
+      background: #2abbac;
+      border: none;
+      color: white;
+      &:hover { background: #249d94; }
+    }
+  }
+}
+
+/* =========================================
+   5. SUCCESS MODAL STYLES
+   ========================================= */
+.success-box {
+  align-items: center; 
+  text-align: center;
+  width: 320px;
+  padding: 30px;
+}
+
+.success-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  background: #dcfce7;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checkmark {
+  color: #22c55e;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.modal-desc {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: -5px;
+  margin-bottom: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.center-action {
+  width: 100%;
+  justify-content: center;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
