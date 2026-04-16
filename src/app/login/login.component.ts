@@ -1,40 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'] 
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  private auth = inject(Auth);
+  private router = inject(Router);
+
   email = '';
   password = '';
   errorMessage = '';
-
-  // قمنا بإزالة Auth من هنا لكي لا يطالبك بـ API Key عند التشغيل
-  constructor(private router: Router) {}
+  isLoading = false;
 
   async onLogin() {
-    this.errorMessage = ''; 
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Please enter email and password.';
+      return;
+    }
 
-    // وضع التجربة: التحقق من البيانات يدوياً بدون إنترنت أو Firebase
-    if (this.email === 'admin@dall.com' && this.password === '123456') {
-      
-      console.log('تم تسجيل الدخول بنجاح (وضع التجربة المحلي)');
-      
-      // التوجه مباشرة للوحة التحكم
-      this.router.navigate(['/dashboard']); 
+    this.isLoading = true;
+    this.errorMessage = '';
 
-    } else {
-      // رسالة الخطأ في حال كانت البيانات المدخلة غير admin@dall.com
-      this.errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة (استخدم الحساب التجريبي).';
-      console.warn('محاولة دخول خاطئة في وضع التجربة');
+    try {
+      await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      await this.router.navigate(['/dashboard']);
+    } catch (error: any) {
+      this.handleError(error.code);
+    } finally {
+      this.isLoading = false;
     }
   }
-  
-}
 
+  private handleError(code: string) {
+    switch (code) {
+      case 'auth/invalid-credential':
+        this.errorMessage = 'Invalid email or password.';
+        break;
+      case 'auth/user-not-found':
+        this.errorMessage = 'User not found.';
+        break;
+      case 'auth/wrong-password':
+        this.errorMessage = 'Incorrect password.';
+        break;
+      case 'auth/invalid-email':
+        this.errorMessage = 'Invalid email format.';
+        break;
+      default:
+        this.errorMessage = 'Login failed. Please try again.';
+    }
+  }
+}
