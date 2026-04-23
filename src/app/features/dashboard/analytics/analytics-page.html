@@ -1,0 +1,93 @@
+<div class="analytics-page">
+
+    <section class="hero-card">
+        <div class="hero-content">
+            <h1>Find Your Way Smarter</h1>
+        </div>
+
+        <div class="hero-logo">
+            <img src="/assets/images/logo4.png" alt="DALL Logo" />
+        </div>
+    </section>
+
+    <section class="panel-card daily-users-card">
+        <div class="panel-header">
+            <h2>Daily Users</h2>
+        </div>
+
+        <div class="chart-area chart-large">
+            <canvas #lineChart></canvas>
+        </div>
+    </section>
+
+    <section class="lower-grid">
+
+        <div class="panel-card busy-areas-card">
+            <div class="panel-header">
+                <h2>Busy Areas</h2>
+            </div>
+
+            <div class="chart-area chart-medium">
+                <canvas #barChart></canvas>
+            </div>
+        </div>
+
+        <div class="stats-column">
+
+            <div class="info-card">
+                <div class="info-top">
+                    <h3>Average Time to Destination</h3>
+                    <span class="icon-circle">◔</span>
+                </div>
+
+                <div class="info-value">{{ avgDuration }} min</div>
+                <p>Based on completed trips</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-top">
+                    <h3>Completed Navigations</h3>
+                    <span class="icon-circle">⟳</span>
+                </div>
+
+                <div class="info-value">{{ completionRate }}% ({{ completedTripsCount }} trips)</div>
+                <p>Out of all started navigations</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="panel-card sessions-card">
+        <div class="panel-header sessions-header">
+            <h2>Recent Sessions</h2>
+
+            <div class="table-head-inline">
+                <span>Status</span>
+                <span>Duration</span>
+                <span>Start Time</span>
+            </div>
+        </div>
+
+        <div class="sessions-table">
+            <div class="session-row" *ngFor="let session of recentSessions">
+                <div class="session-main">
+                    <span class="from">{{ session.startAnchorName || 'Unknown' }}</span>
+                    <span class="to">{{ session.destinationName || 'Unknown' }}</span>
+                </div>
+
+                <div class="session-extra">
+                    <span class="status" [class.completed]="session.status === 'completed'">
+                        {{ session.status || 'unknown' }}
+                    </span>
+                    <span>{{ session.durationSeconds || 0 }} sec</span>
+                    <span>{{ formatDate(session.startedAt) }}</span>
+                </div>
+            </div>
+
+            <div class="empty-row" *ngIf="recentSessions.length === 0">
+                No recent sessions yet.
+            </div>
+        </div>
+    </section>
+
+</div>

@@ -1,320 +1,284 @@
-/* =========================================
-   1. GENERAL TOOLBAR LAYOUT
-   ========================================= */
+.hero-card {
+  background: #f7f8fd;
+  border-radius: 24px;
+  height: 80px;
+  padding: 22px 34px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 32px 0 rgba(73, 67, 67, 0.188);
+  border: 1px solid #eceef6;
+  overflow: hidden;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-content h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    color: #8b91ad;
+    letter-spacing: 0.2px;
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+}
+
+.hero-content h1::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  transform: translateY(-50%);
+  width: 1105px;
+  height: 50px;
+  border-radius: 999px;
+  z-index: 0;
+
+  background: linear-gradient(to left,
+      #b8f1ed -10%,
+      rgba(185, 233, 242, 0.4) 20%,
+      rgba(185, 233, 242, 0.3) 45%,
+      rgba(185, 233, 242, 0.35) 70%,
+      rgba(185, 233, 242, 0.08) 88%,
+      rgba(185, 233, 242, 0) 100%);
+}
+
+.hero-logo2 {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  z-index: 10;
+}
+
+.hero-logo2 {
+  margin-right: 10px;
+}
+
 .toolbar-main-container {
-  padding: 10px 20px;
-  background-color: transparent; 
+  width: 100%;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  margin-top: 4px;
+  margin-bottom: -13px;
 }
 
 .toolbar-inner-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.106); 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 20px; 
-  border: 1px solid rgba(255, 255, 255, 0.3); 
-  padding: 8px 24px;
-  height: 60px;
-  box-shadow: 0 8px 32px 0 rgba(73, 67, 67, 0.188);
-}
-
-/* =========================================
-   2. LEFT SECTION (Branding & Actions)
-   ========================================= */
-.branding-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-right: 20px;
-
-  .app-logo-img {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
-  }
-
-  .app-title-text {
-    
-    font-family: 'Poppins', 'Segoe UI', sans-serif; 
-    font-weight: 300; 
-    font-size: 22px; 
-    color: #1e293b; 
-    letter-spacing: 1px;
-    white-space: nowrap;
-}
+  justify-content: flex-start;
+  background: transparent;
+  padding: 0;
+  min-height: auto;
+  box-shadow: none;
 }
 
 .main-actions-group {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 5px 20px;
-  margin: 0 auto; 
-  flex: none; 
+  padding: 8px 18px;
+  margin: 0;
+  flex: none;
 
-  background: rgba(255, 255, 255, 0.4); 
-  backdrop-filter: blur(12px); 
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(73, 67, 67, 0.08);
 }
 
-/* --- Modern Map Selector (تم التوسيع هنا) --- */
+.modern-btn {
+  border: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: #334155;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: 0.2s ease;
+}
+
+.modern-btn:hover {
+  transform: translateY(-1px);
+}
+
+.plus-sign {
+  color: #22b8b1;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.delete-variant {
+  color: #ff4b4b;
+}
+
 .modern-selector-box {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.5); 
-  border-radius: 8px;
-  border: 1px solid rgba(203, 213, 225, 0.5);
-  height: 36px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid #d9dee8;
+  border-radius: 12px;
   overflow: hidden;
-  /* التعديل: زيادة العرض الإجمالي للبوكس */
-  min-width: 280px; 
-
-  label {
-    background: transparent;
-    color: #64748b;
-    padding: 0 15px; /* زيادة التباعد قليلاً */
-    font-size: 11px;
-    font-weight: 500;
-    border-right: 1px solid rgba(203, 213, 225, 0.5);
-    display: flex;
-    align-items: center;
-    height: 100%;
-    white-space: nowrap;
-  }
-
-  .dropdown-wrapper {
-    position: relative;
-    padding: 0 30px 0 12px;
-    display: flex;
-    align-items: center;
-    flex: 1; /* جعل منطقة الاختيار تأخذ باقي المساحة */
-
-    select {
-      appearance: none;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 600;
-      color: #1e293b;
-      cursor: pointer;
-      width: 100%; /* جعل السيلكت يملأ المساحة الجديدة */
-    }
-
-    .chevron-icon-custom {
-      position: absolute;
-      right: 10px;
-      font-size: 8px;
-      color: #94a3b8;
-      pointer-events: none;
-    }
-  }
+  min-width: 340px;
 }
 
-/* --- Modern Action Buttons --- */
-.modern-btn {
-  height: 36px;
-  padding: 0 14px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.7); 
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  transition: all 0.2s;
-  color: #334155;
-
-  &:hover {
-    background: #ffffff;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .plus-sign {
-    color: #2abbac;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  &.delete-variant {
-    color: #ef4444;
-    &:hover {
-      background: rgba(239, 68, 68, 0.1);
-    }
-  }
-}
-
-/* =========================================
-   3. RIGHT SECTION (Account/Sign Out)
-   ========================================= */
-.user-account-section {
-  display: flex;
-  align-items: center;
-}
-
-.sign-out-action {
-  background: transparent;
-  border: none;
+.modern-selector-box label {
+  padding: 12px 18px;
   color: #64748b;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: all 0.2s;
-
-  &:hover {
-    background: rgba(171, 184, 181, 0.408);
-    color: #2b2b2b;
-  }
-
-  .user-avatar-icon {
-    font-size: 16px;
-  }
+  font-size: 14px;
+  white-space: nowrap;
+  border-right: 1px solid #d9dee8;
 }
 
-/* =========================================
-   4. MODAL STYLES (Popup Window)
-   ========================================= */
+.dropdown-wrapper {
+  flex: 1;
+}
+
+.dropdown-wrapper select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  appearance: none;
+}
+
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 23, 42, 0.5); 
-  z-index: 10000;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.18);
   display: flex;
-  justify-content: center;
   align-items: center;
-  backdrop-filter: blur(4px);
+  justify-content: center;
+  z-index: 50;
 }
 
 .modal-box {
-  background: white;
-  width: 400px;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  animation: slideDown 0.3s ease-out;
-
-  .modal-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0;
-  }
-
-  .modal-input {
-    width: 100%;
-    height: 42px;
-    padding: 0 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-
-    &:focus {
-      border-color: #2abbac;
-      box-shadow: 0 0 0 3px rgba(42, 187, 172, 0.1);
-    }
-  }
-
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
-
-    button {
-      padding: 8px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    .btn-cancel {
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      color: #64748b;
-      &:hover { background: #f1f5f9; }
-    }
-
-    .btn-save {
-      background: #2abbac;
-      border: none;
-      color: white;
-      &:hover { background: #249d94; }
-    }
-  }
+  width: 420px;
+  max-width: calc(100vw - 24px);
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
 }
 
-/* =========================================
-   5. SUCCESS MODAL STYLES
-   ========================================= */
+.modal-title {
+  margin: 0 0 14px;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.modal-input {
+  width: 100%;
+  border: 1px solid #d9dee8;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-cancel,
+.btn-save {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: #eef2f7;
+  color: #334155;
+}
+
+.btn-save {
+  background: #22b8b1;
+  color: #fff;
+}
+
 .success-box {
-  align-items: center; 
   text-align: center;
-  width: 320px;
-  padding: 30px;
 }
 
 .success-icon-wrapper {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
   background: #dcfce7;
-  border-radius: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: center;
+  margin: 0 auto 12px;
 }
 
 .checkmark {
-  color: #22c55e;
+  color: #16a34a;
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .modal-desc {
   color: #64748b;
-  font-size: 14px;
-  margin-top: -5px;
-  margin-bottom: 15px;
+  margin: 8px 0 0;
+}
+
+.center-action {
+  justify-content: center;
 }
 
 .full-width {
   width: 100%;
 }
 
-.center-action {
-  width: 100%;
-  justify-content: center;
+@media (max-width: 1100px) {
+  .hero-content h1::after {
+    width: 640px;
+  }
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
+@media (max-width: 900px) {
+  .hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
   }
-  to {
-    transform: translateY(0);
-    opacity: 1;
+
+  .hero-content h1 {
+    font-size: 24px;
+  }
+
+  .hero-content h1::after {
+    width: 260px;
+    height: 32px;
+  }
+
+  .main-actions-group {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .modern-selector-box {
+    min-width: 100%;
   }
 }

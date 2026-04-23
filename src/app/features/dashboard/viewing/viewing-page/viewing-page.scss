@@ -1,10 +1,7 @@
 .page-wrapper {
-    /* التعديل هنا: vh تعني ارتفاع الشاشة بالكامل */
     min-height: 100vh; 
     width: 100%;
-    
-    /* اللون الحالي أو يمكنك استخدام التدرج */
-    background: #E0E0E0; 
+    background: #f4f5fb; 
 
     display: flex;
     flex-direction: column;
@@ -27,16 +24,14 @@
     height: 90vh;
 }
 
-/* The row that contains map + anchor list */
 .content-row {
     display: grid;
     grid-template-columns: 1fr 340px;
     gap: 20px;
-    height: calc(100vh - 180px); // adjust for your header/toolbar heights
+    height: calc(100vh - 180px); 
     overflow: hidden;
 }
 
-/* Map takes all left space */
 .map-area {
     background: white;
     border-radius: 12px;
@@ -44,7 +39,6 @@
     border: 1px solid #e0e0e0;
 }
 
-/* Right panel fixed width */
 .anchor-panel {
     height: 100%;
     overflow: hidden;

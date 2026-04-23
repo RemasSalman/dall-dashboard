@@ -1,14 +1,21 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { DashboardLayoutComponent } from './features/dashboard/layout/dashboard-layout';
 import { ViewingPageComponent } from './features/dashboard/viewing/viewing-page/viewing-page';
+import { AnalyticsPageComponent } from './features/dashboard/analytics/analytics-page';
 
 export const routes: Routes = [
-  // 1. اجعلي المسار الفارغ يفتح صفحة اللوق ان
   { path: '', component: LoginComponent },
 
-  // 2. اجعلي لوحة التحكم على مسار مستقل اسمه dashboard
-  { path: 'dashboard', component: ViewingPageComponent },
+  {
+    path: 'dashboard',
+    component: DashboardLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'management', pathMatch: 'full' },
+      { path: 'management', component: ViewingPageComponent },
+      { path: 'analytics', component: AnalyticsPageComponent }
+    ]
+  },
 
-  // 3. أي مسار آخر غير معروف يرجعنا للوق ان
   { path: '**', redirectTo: '' }
 ];

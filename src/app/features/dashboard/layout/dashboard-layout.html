@@ -1,0 +1,31 @@
+<div class="admin-shell">
+    <header class="top-header">
+        <div class="brand-group">
+            <span class="brand-logo">DALL</span>
+            <span class="brand-subtitle">Administrator Platform</span>
+        </div>
+    </header>
+
+    <div class="body-shell">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a routerLink="/dashboard/management" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+                    Map Managment
+                </a>
+
+                <a routerLink="/dashboard/analytics" routerLinkActive="active" class="nav-item">
+                    Dashboard
+                </a>
+            </nav>
+
+            <button class="logout-btn" (click)="signOut()">
+                Log Out
+            </button>
+        </aside>
+
+        <main class="page-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

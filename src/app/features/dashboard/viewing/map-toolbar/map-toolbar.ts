@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // كود مضاف: استيراد الراوتر للتنقل بين الصفحات
 import { FullscreenService } from '../../../../services/fullscreen.service';
 import { MapsService, MapData } from '../../../../services/maps.service'; 
 
@@ -28,7 +27,6 @@ export class MapToolbarComponent implements OnInit {
   constructor(
     private fullscreenService: FullscreenService,
     private mapsService: MapsService,
-    private router: Router // كود مضاف: حقن خدمة الراوتر داخل الكونسلتركتور
   ) {}
 
   ngOnInit(): void {
@@ -106,12 +104,4 @@ export class MapToolbarComponent implements OnInit {
   toggleFullscreen() { this.fullscreenService.setFullscreen(true); }
   exitFullscreen() { this.fullscreenService.setFullscreen(false); }
 
-  // =========================================
-  // الكود المضاف: دالة تسجيل الخروج مع التوجيه
-  // =========================================
-  onSignOut() {
-    console.log('User signed out');
-    // عند الضغط، سيقوم الراوتر بنقلك للمسار الفارغ (صفحة الـ Login)
-    this.router.navigate(['/']); 
-  }
 }
