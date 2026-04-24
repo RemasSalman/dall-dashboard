@@ -19,10 +19,9 @@ export interface Anchor {
   name: string;
   type: string;
   description?: string;
-
+  pixels?: { x: number; y: number; };
   position: { x: number; y: number; z: number };
-  scale:    { x: number; y: number; z: number };
-  rotation: { x: number; y: number; z: number };
+  scale: { x: number; y: number; z: number };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,15 +29,18 @@ export class AnchorsService {
 
   // NEW: last click position shared between map + panel
   private lastClickPosSubject =
-    new BehaviorSubject<{ x: number; y: number } | null>(null);
+    new BehaviorSubject<{
+      x: number; y: number; pixelX?: number;
+      pixelY?: number;
+    } | null>(null);
 
   lastClickPos$ = this.lastClickPosSubject.asObservable();
 
-  setLastClickPos(pos: { x: number; y: number } | null) {
+  setLastClickPos(pos: { x: number; y: number; pixelX?: number; pixelY?: number } | null) {
     this.lastClickPosSubject.next(pos);
   }
-//......
- private selectedAnchorSubject =
+  //......
+  private selectedAnchorSubject =
     new BehaviorSubject<Anchor | null>(null);
 
   selectedAnchor$ = this.selectedAnchorSubject.asObservable();
@@ -47,7 +49,7 @@ export class AnchorsService {
     this.selectedAnchorSubject.next(anchor);
   }
   //........
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore) { }
 
   getAnchors(): Observable<Anchor[]> {
     const anchorsRef = collection(this.firestore, 'anchors');
@@ -66,8 +68,8 @@ export class AnchorsService {
   }
 
   deleteAnchor(anchorId: string): Promise<void> {
-  const ref = doc(this.firestore, 'anchors', anchorId);
-  return deleteDoc(ref);
-}
+    const ref = doc(this.firestore, 'anchors', anchorId);
+    return deleteDoc(ref);
+  }
 
 }

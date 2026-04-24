@@ -13,21 +13,21 @@ import { FullscreenService } from '../../../../services/fullscreen.service';
 })
 export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
 
-  @Input() mapId: string = ''; 
+  @Input() mapId: string = '';
   @Input() imageUrl: string = '';
 
   anchors: Anchor[] = [];
   isFullscreen = false;
   displayWidth = 0;
   displayHeight = 0;
-  previewPos: { x: number; y: number } | null = null;
+  previewPos: { x: number; y: number; pixelX?: number; pixelY?: number } | null = null;
 
   @ViewChild('mapImage') mapImage!: ElementRef<HTMLImageElement>;
 
   constructor(
     private anchorsService: AnchorsService,
     private fullscreenService: FullscreenService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fullscreenService.isFullscreen$.subscribe(state => {
@@ -63,33 +63,39 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
   getScaledX(x: number): number { return x * this.displayWidth; }
   getScaledY(y: number): number { return y * this.displayHeight; }
 
- onMapClick(event: MouseEvent): void {
-  if (!this.mapImage) return;
+  onMapClick(event: MouseEvent): void {
+    if (!this.mapImage) return;
 
-  const target = event.target as HTMLElement;
+    const target = event.target as HTMLElement;
 
-  if (target.closest('.map-anchor')) {
-    return;
+    if (target.closest('.map-anchor')) {
+      return;
+    }
+
+    const rect = this.mapImage.nativeElement.getBoundingClientRect();
+    const pixelX = event.clientX - rect.left;
+    const pixelY = event.clientY - rect.top;
+
+    const xNorm = pixelX / rect.width;
+    const yNorm = pixelY / rect.height;
+
+    const x = Math.min(Math.max(xNorm, 0), 1);
+    const y = Math.min(Math.max(yNorm, 0), 1);
+
+    this.anchorsService.setSelectedAnchor(null);
+    this.anchorsService.setLastClickPos({
+      x, y, pixelX: Math.round(pixelX),
+      pixelY: Math.round(pixelY)
+    });
   }
-
-  const rect = this.mapImage.nativeElement.getBoundingClientRect();
-  const xNorm = (event.clientX - rect.left) / rect.width;
-  const yNorm = (event.clientY - rect.top) / rect.height;
-
-  const x = Math.min(Math.max(xNorm, 0), 1);
-  const y = Math.min(Math.max(yNorm, 0), 1);
-
-  this.anchorsService.setSelectedAnchor(null);
-  this.anchorsService.setLastClickPos({ x, y });
-}
 
 
   onAnchorClick(event: MouseEvent, anchor: Anchor): void {
-  event.stopPropagation();
+    event.stopPropagation();
 
-  this.anchorsService.setLastClickPos(null);
-  this.anchorsService.setSelectedAnchor(anchor);
-}
+    this.anchorsService.setLastClickPos(null);
+    this.anchorsService.setSelectedAnchor(anchor);
+  }
 
 
 }

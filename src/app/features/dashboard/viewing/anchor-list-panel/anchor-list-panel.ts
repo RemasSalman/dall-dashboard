@@ -5,9 +5,9 @@ import { AnchorsService, Anchor } from '../../../../services/anchors.service';
 
 interface AnchorForm {
   qrId: string; name: string; type: string; description: string;
+  pixels: { x: number; y: number };
   position: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
-  rotation: { x: number; y: number; z: number };
 }
 
 @Component({
@@ -25,16 +25,16 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
   isDeleteConfirmOpen = false;
   anchorToDelete: Anchor | null = null;
-  
+
   anchorForm: AnchorForm = {
     qrId: '',
     name: '', type: '', description: '',
+    pixels: { x: 0, y: 0 },
     position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
-    rotation: { x: 0, y: 0, z: 0 }
   };
 
-  constructor(private anchorsService: AnchorsService) {}
+  constructor(private anchorsService: AnchorsService) { }
 
   ngOnInit(): void {
     this.anchorsService.getAnchorsByMap(this.mapId)
@@ -53,9 +53,12 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
           name: '',
           type: '',
           description: '',
-          position: { x: pos.x, y: pos.y, z: 0 },
+          pixels: {
+            x: pos.pixelX ?? 0,
+            y: pos.pixelY ?? 0
+          },
+          position: { x: 0, y: 0, z: 0 },
           scale: { x: 1, y: 1, z: 1 },
-          rotation: { x: 0, y: 0, z: 0 }
         };
       });
 
@@ -66,13 +69,14 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
         this.isAnchorDetailsOpen = true;
 
         this.anchorForm = {
-          qrId:        anchor.qrId ?? '',
-          name:        anchor.name ?? '',
-          type:        anchor.type ?? '',
+          qrId: anchor.qrId ?? '',
+          name: anchor.name ?? '',
+          type: anchor.type ?? '',
           description: anchor.description ?? '',
-          position:    anchor.position ?? { x: 0, y: 0, z: 0 },
-          scale:       anchor.scale ?? { x: 1, y: 1, z: 1 },
-          rotation:    anchor.rotation ?? { x: 0, y: 0, z: 0 }
+          pixels: anchor.pixels ?? { x: 0, y: 0 },
+
+          position: anchor.position ?? { x: 0, y: 0, z: 0 },
+          scale: anchor.scale ?? { x: 1, y: 1, z: 1 },
         };
       });
   }
@@ -124,9 +128,9 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
     this.anchorForm = {
       qrId: '',
       name: '', type: '', description: '',
+      pixels: { x: 0, y: 0 },
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 1, y: 1, z: 1 },
-      rotation: { x: 0, y: 0, z: 0 }
     };
   }
 
@@ -136,7 +140,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
   onDeleteClick(anchor: Anchor, event?: MouseEvent): void {
     if (event) {
-      event.stopPropagation(); 
+      event.stopPropagation();
     }
     this.anchorToDelete = anchor;
     this.isDeleteConfirmOpen = true;
