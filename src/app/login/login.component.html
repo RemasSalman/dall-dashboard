@@ -1,7 +1,5 @@
 <div class="main-container">
-    <div class="top-link">
-         DALL.com
-    </div>
+    <div class="top-link">DALL.com</div>
 
     <div class="login-card">
         <div class="image-section">
@@ -9,24 +7,19 @@
         </div>
 
         <div class="form-section">
-            <div class="brand">
-                
-            </div>
-
             <h2>Welcome Back!</h2>
             <p class="subtitle">Enter Your Details Below</p>
 
             <form (ngSubmit)="onLogin()">
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email">
+                    <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required>
                 </div>
 
                 <div class="input-group">
                     <label>Password</label>
                     <div class="password-wrapper">
-                        <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password">
-                        <span class="toggle-password" style="cursor: pointer;"></span>
+                        <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" required>
                     </div>
                 </div>
 
@@ -41,12 +34,12 @@
                     <a href="#" class="forgot-pass">Forgot password?</a>
                 </div>
 
-                <button type="submit" class="btn-login">Log in</button>
-
-                
+                <button type="submit" class="btn-login" [disabled]="isLoading">
+                    {{ isLoading ? 'Processing...' : 'Log in' }}
+                </button>
             </form>
 
-           <p class="signup-text">Don't have an account? <a routerLink="/signup">Sign Up</a></p>
+            <p class="signup-text">Don't have an account? <a routerLink="/signup">Sign Up</a></p>
         </div>
     </div>
 </div>

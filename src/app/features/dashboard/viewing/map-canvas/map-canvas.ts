@@ -43,11 +43,69 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  loadAnchorsForCurrentMap() {
-    this.anchorsService.getAnchorsByMap(this.mapId).subscribe((data: Anchor[]) => {
-      this.anchors = data;
+  /**************************************************************************/
+ loadAnchorsForCurrentMap() {
+  this.anchorsService.getAnchorsByMap(this.mapId).subscribe((data: Anchor[]) => {
+    this.anchors = this.generateNeighbors(data, 1.5);
+
+    console.table(this.anchors.map(a => ({
+      name: a.name,
+      neighbors: a.neighbors?.join(', ')
+    })));
+
+    this.saveGeneratedNeighborsToFirestore();
+  });
+}
+
+saveGeneratedNeighborsToFirestore(): void {
+  this.anchors.forEach(anchor => {
+    if (!anchor.id) return;
+
+    this.anchorsService.updateAnchor(anchor.id, {
+      neighbors: anchor.neighbors || []
     });
+  });
+
+  console.log('Generated neighbors saved to Firestore');
+}
+
+// ✅ NEW: calculate distance between two anchors
+getDistance(a: Anchor, b: Anchor): number {
+  const dx = a.position.x - b.position.x;
+  const dy = a.position.y - b.position.y;
+  const dz = a.position.z - b.position.z;
+
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+// ✅ NEW: generate neighbors automatically based on distance
+generateNeighbors(anchors: Anchor[], threshold: number = 5): Anchor[] {
+
+  anchors.forEach(anchor => {
+    anchor.neighbors = [];
+  });
+
+  for (let i = 0; i < anchors.length; i++) {
+    for (let j = i + 1; j < anchors.length; j++) {
+
+      const anchorA = anchors[i];
+      const anchorB = anchors[j];
+
+      const distance = this.getDistance(anchorA, anchorB);
+
+      if (distance < threshold) {
+        anchorA.neighbors!.push(anchorB.name);
+        anchorB.neighbors!.push(anchorA.name);
+      }
+    }
   }
+
+  return anchors;
+}
+
+
+
+/*************************************************************************************** */
 
   ngAfterViewInit(): void { setTimeout(() => this.updateMapSize(), 300); }
   @HostListener('window:resize') onResize() { this.updateMapSize(); }

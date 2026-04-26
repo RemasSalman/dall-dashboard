@@ -1,4 +1,3 @@
-// anchors.service.ts
 import { Injectable } from '@angular/core';
 import {
   Firestore,
@@ -8,9 +7,11 @@ import {
   query,
   where,
   doc,
-  deleteDoc
+  deleteDoc,
+  updateDoc
 } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';   // add BehaviorSubject
+
+import { Observable, BehaviorSubject } from 'rxjs';
 
 export interface Anchor {
   qrId: string;
@@ -19,18 +20,20 @@ export interface Anchor {
   name: string;
   type: string;
   description?: string;
-  pixels?: { x: number; y: number; };
+  pixels?: { x: number; y: number };
   position: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
+  neighbors?: string[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class AnchorsService {
 
-  // NEW: last click position shared between map + panel
   private lastClickPosSubject =
     new BehaviorSubject<{
-      x: number; y: number; pixelX?: number;
+      x: number;
+      y: number;
+      pixelX?: number;
       pixelY?: number;
     } | null>(null);
 
@@ -39,7 +42,7 @@ export class AnchorsService {
   setLastClickPos(pos: { x: number; y: number; pixelX?: number; pixelY?: number } | null) {
     this.lastClickPosSubject.next(pos);
   }
-  //......
+
   private selectedAnchorSubject =
     new BehaviorSubject<Anchor | null>(null);
 
@@ -48,7 +51,7 @@ export class AnchorsService {
   setSelectedAnchor(anchor: Anchor | null) {
     this.selectedAnchorSubject.next(anchor);
   }
-  //........
+
   constructor(private firestore: Firestore) { }
 
   getAnchors(): Observable<Anchor[]> {
@@ -67,9 +70,13 @@ export class AnchorsService {
     return addDoc(anchorsRef, anchor);
   }
 
+  updateAnchor(id: string, data: Partial<Anchor>) {
+    const ref = doc(this.firestore, 'anchors', id);
+    return updateDoc(ref, data);
+  }
+
   deleteAnchor(anchorId: string): Promise<void> {
     const ref = doc(this.firestore, 'anchors', anchorId);
     return deleteDoc(ref);
   }
-
 }
