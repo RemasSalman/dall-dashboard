@@ -143,11 +143,17 @@
         </select>
         <img src="assets/icons/chevron.png" class="chevron-select">
       </div>
+      
+      <!-- Reference Corner -->
+      <label class="form-label">Reference Corner</label>
+      <input type="text" class="form-input" placeholder="e.g. Top Left Corner" name="referenceCorner"
+        [(ngModel)]="anchorForm.referenceCorner">
 
       <!-- Description -->
       <label class="form-label">Anchor Description</label>
       <textarea class="form-textarea" placeholder="Enter a description here" name="anchorDescription"
         [(ngModel)]="anchorForm.description"></textarea>
+
 
       <!-- Coordination -->
       <label class="form-label">Coordination</label>

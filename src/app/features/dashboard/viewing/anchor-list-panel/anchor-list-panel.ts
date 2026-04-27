@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AnchorsService, Anchor } from '../../../../services/anchors.service';
 
 interface AnchorForm {
-  qrId: string; name: string; type: string; description: string;
+  qrId: string; name: string; type: string; description: string; referenceCorner: string;
   pixels: { x: number; y: number };
   position: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
@@ -28,7 +28,8 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
   anchorForm: AnchorForm = {
     qrId: '',
-    name: '', type: '', description: '',
+    name: '', type: '', description: '', referenceCorner: '',
+
     pixels: { x: 0, y: 0 },
     position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
@@ -53,6 +54,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
           name: '',
           type: '',
           description: '',
+          referenceCorner: '',
           pixels: {
             x: pos.pixelX ?? 0,
             y: pos.pixelY ?? 0
@@ -73,6 +75,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
           name: anchor.name ?? '',
           type: anchor.type ?? '',
           description: anchor.description ?? '',
+          referenceCorner: anchor.referenceCorner ?? '',
           pixels: anchor.pixels ?? { x: 0, y: 0 },
 
           position: anchor.position ?? { x: 0, y: 0, z: 0 },
@@ -127,7 +130,7 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   resetForm() {
     this.anchorForm = {
       qrId: '',
-      name: '', type: '', description: '',
+      name: '', type: '', description: '', referenceCorner: '',
       pixels: { x: 0, y: 0 },
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 1, y: 1, z: 1 },
