@@ -1,17 +1,19 @@
 // anchors.service.ts
+
 import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
   addDoc,
-  collectionData,
   query,
   where,
   doc,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  getDocs
 } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';   // add BehaviorSubject
+
+import { BehaviorSubject } from 'rxjs';
 
 export interface Anchor {
   qrId: string;
@@ -30,19 +32,31 @@ export interface Anchor {
 @Injectable({ providedIn: 'root' })
 export class AnchorsService {
 
-  // NEW: last click position shared between map + panel
+  constructor(private firestore: Firestore) {}
+
+  // =========================
+  // 🔵 Shared UI State
+  // =========================
+
   private lastClickPosSubject =
     new BehaviorSubject<{
-      x: number; y: number; pixelX?: number;
+      x: number;
+      y: number;
+      pixelX?: number;
       pixelY?: number;
     } | null>(null);
 
   lastClickPos$ = this.lastClickPosSubject.asObservable();
 
-  setLastClickPos(pos: { x: number; y: number; pixelX?: number; pixelY?: number } | null) {
+  setLastClickPos(pos: {
+    x: number;
+    y: number;
+    pixelX?: number;
+    pixelY?: number;
+  } | null) {
     this.lastClickPosSubject.next(pos);
   }
-  //......
+
   private selectedAnchorSubject =
     new BehaviorSubject<Anchor | null>(null);
 
@@ -51,33 +65,39 @@ export class AnchorsService {
   setSelectedAnchor(anchor: Anchor | null) {
     this.selectedAnchorSubject.next(anchor);
   }
-  //........
-  constructor(private firestore: Firestore) { }
 
-  getAnchors(): Observable<Anchor[]> {
-    const anchorsRef = collection(this.firestore, 'anchors');
-    return collectionData(anchorsRef, { idField: 'id' }) as Observable<Anchor[]>;
-  }
+  // =========================
+  // 🟢 Firestore (SAFE)
+  // =========================
 
-  getAnchorsByMap(mapId: string): Observable<Anchor[]> {
+  // ✅ جلب مرة واحدة فقط (بدون realtime)
+  async getAnchorsByMap(mapId: string): Promise<Anchor[]> {
     const anchorsRef = collection(this.firestore, 'anchors');
     const q = query(anchorsRef, where('mapId', '==', mapId));
-    return collectionData(q, { idField: 'id' }) as Observable<Anchor[]>;
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Anchor[];
   }
 
-  addAnchor(anchor: Anchor) {
+  // ✅ إضافة
+  async addAnchor(anchor: Anchor) {
     const anchorsRef = collection(this.firestore, 'anchors');
-    return addDoc(anchorsRef, anchor);
+    return await addDoc(anchorsRef, anchor);
   }
 
-  deleteAnchor(anchorId: string): Promise<void> {
+  // ✅ حذف
+  async deleteAnchor(anchorId: string): Promise<void> {
     const ref = doc(this.firestore, 'anchors', anchorId);
-    return deleteDoc(ref);
+    return await deleteDoc(ref);
   }
 
-  updateAnchor(anchorId: string, data: Partial<Anchor>): Promise<void> {
+  // ✅ تحديث (مع حماية)
+  async updateAnchor(anchorId: string, data: Partial<Anchor>): Promise<void> {
     const ref = doc(this.firestore, 'anchors', anchorId);
-    return updateDoc(ref, data);
+    return await updateDoc(ref, data);
   }
-
 }

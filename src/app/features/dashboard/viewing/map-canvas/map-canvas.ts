@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { AnchorsService, Anchor } from '../../../../services/anchors.service';
 import { FullscreenService } from '../../../../services/fullscreen.service';
 
-// 🔥 Firestore (Batch)
 import { Firestore, writeBatch, doc } from '@angular/fire/firestore';
 
 @Component({
@@ -33,8 +32,10 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(
     private anchorsService: AnchorsService,
     private fullscreenService: FullscreenService,
-    private firestore: Firestore // ✅ مهم
+    private firestore: Firestore
   ) {}
+
+  // ================= INIT =================
 
   ngOnInit(): void {
     this.fullscreenService.isFullscreen$.subscribe(state => {
@@ -42,28 +43,32 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
       setTimeout(() => this.updateMapSize(), 100);
     });
 
-    this.anchorsService.lastClickPos$.subscribe(pos => this.previewPos = pos);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['mapId'] && this.mapId) {
-      this.loadAnchorsForCurrentMap();
-    }
-  }
-
-  // ✅ تحميل بدون حفظ
-  loadAnchorsForCurrentMap() {
-    this.anchorsService.getAnchorsByMap(this.mapId).subscribe((data: Anchor[]) => {
-      this.anchors = this.generateNeighbors(data, 1.5);
-
-      console.table(this.anchors.map(a => ({
-        name: a.name,
-        neighbors: a.neighbors?.join(', ')
-      })));
+    this.anchorsService.lastClickPos$.subscribe(pos => {
+      this.previewPos = pos;
     });
   }
 
-  // ✅ حساب المسافة
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes['mapId'] && this.mapId) {
+      await this.loadAnchorsForCurrentMap();
+    }
+  }
+
+  // ================= DATA =================
+
+  async loadAnchorsForCurrentMap() {
+    const data = await this.anchorsService.getAnchorsByMap(this.mapId);
+
+    this.anchors = this.generateNeighbors(data, 1.5);
+
+    console.table(this.anchors.map(a => ({
+      name: a.name,
+      neighbors: a.neighbors?.join(', ')
+    })));
+  }
+
+  // ================= LOGIC =================
+
   getDistance(a: Anchor, b: Anchor): number {
     const dx = a.position.x - b.position.x;
     const dy = a.position.y - b.position.y;
@@ -72,7 +77,6 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 
-  // ✅ توليد neighbors (بدون حفظ)
   generateNeighbors(anchors: Anchor[], threshold: number = 5): Anchor[] {
 
     anchors.forEach(anchor => anchor.neighbors = []);
@@ -95,24 +99,35 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
     return anchors;
   }
 
-  // 🔥 أهم دالة (Batch + بدون تكرار)
+  // ================= SAVE =================
+
+  saving = false;
+
   async saveGeneratedNeighborsToFirestore(): Promise<void> {
+    if (this.saving) return; // 🛑 منع التكرار
+    this.saving = true;
 
-    const batch = writeBatch(this.firestore);
+    try {
+      const batch = writeBatch(this.firestore);
 
-    this.anchors.forEach(anchor => {
-      if (!anchor.id) return;
+      this.anchors.forEach(anchor => {
+        if (!anchor.id) return;
 
-      const ref = doc(this.firestore, `anchors/${anchor.id}`);
+        const ref = doc(this.firestore, `anchors/${anchor.id}`);
 
-      batch.update(ref, {
-        neighbors: anchor.neighbors || []
+        batch.update(ref, {
+          neighbors: anchor.neighbors || []
+        });
       });
-    });
 
-    await batch.commit();
+      await batch.commit();
 
-    console.log('✅ Saved using batch (1 write instead of many)');
+      console.log('✅ Saved using batch');
+    } catch (error) {
+      console.error('❌ Error saving:', error);
+    } finally {
+      this.saving = false;
+    }
   }
 
   // ================= UI =================
@@ -122,9 +137,13 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   @HostListener('window:resize')
-  onResize() { this.updateMapSize(); }
+  onResize() {
+    this.updateMapSize();
+  }
 
-  onImageLoad(): void { this.updateMapSize(); }
+  onImageLoad(): void {
+    this.updateMapSize();
+  }
 
   private updateMapSize(): void {
     if (!this.mapImage) return;
@@ -134,8 +153,13 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
     this.displayHeight = rect.height;
   }
 
-  getScaledX(x: number): number { return x * this.displayWidth; }
-  getScaledY(y: number): number { return y * this.displayHeight; }
+  getScaledX(x: number): number {
+    return x * this.displayWidth;
+  }
+
+  getScaledY(y: number): number {
+    return y * this.displayHeight;
+  }
 
   onMapClick(event: MouseEvent): void {
     if (!this.mapImage) return;
@@ -154,7 +178,8 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
 
     this.anchorsService.setSelectedAnchor(null);
     this.anchorsService.setLastClickPos({
-      x, y,
+      x,
+      y,
       pixelX: Math.round(pixelX),
       pixelY: Math.round(pixelY)
     });

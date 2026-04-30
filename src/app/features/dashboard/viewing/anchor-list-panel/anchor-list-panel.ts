@@ -4,7 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { AnchorsService, Anchor } from '../../../../services/anchors.service';
 
 interface AnchorForm {
-  qrId: string; name: string; type: string; description: string; referenceCorner: string;
+  qrId: string;
+  name: string;
+  type: string;
+  description: string;
+  referenceCorner: string;
   pixels: { x: number; y: number };
   position: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
@@ -18,8 +22,11 @@ interface AnchorForm {
   styleUrls: ['./anchor-list-panel.scss']
 })
 export class AnchorListPanelComponent implements OnInit, OnChanges {
+
   @Input() mapId: string = '';
+
   anchors: Anchor[] = [];
+
   isAnchorsListOpen = false;
   isAnchorDetailsOpen = false;
 
@@ -28,21 +35,27 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
   anchorForm: AnchorForm = {
     qrId: '',
-    name: '', type: '', description: '', referenceCorner: '',
-
+    name: '',
+    type: '',
+    description: '',
+    referenceCorner: '',
     pixels: { x: 0, y: 0 },
     position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
   };
 
-  constructor(private anchorsService: AnchorsService) { }
+  constructor(private anchorsService: AnchorsService) {}
 
-  ngOnInit(): void {
-    this.anchorsService.getAnchorsByMap(this.mapId)
-      .subscribe((data: Anchor[]) => {
-        this.anchors = data;
-      });
+  // ================= INIT =================
 
+  async ngOnInit(): Promise<void> {
+
+    // ✅ تحميل أولي
+    if (this.mapId) {
+      await this.loadAnchors();
+    }
+
+    // ✅ هذه subscriptions عادية (ما فيها Firestore)
     this.anchorsService.lastClickPos$
       .subscribe(pos => {
         if (!pos) return;
@@ -77,34 +90,36 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
           description: anchor.description ?? '',
           referenceCorner: anchor.referenceCorner ?? '',
           pixels: anchor.pixels ?? { x: 0, y: 0 },
-
           position: anchor.position ?? { x: 0, y: 0, z: 0 },
           scale: anchor.scale ?? { x: 1, y: 1, z: 1 },
         };
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes['mapId'] && this.mapId) {
-      this.loadAnchors();
+      await this.loadAnchors();
     }
   }
 
-  loadAnchors() {
-    this.anchorsService.getAnchorsByMap(this.mapId)
-      .subscribe(data => this.anchors = data);
+  // ================= DATA =================
+
+  async loadAnchors(): Promise<void> {
+    this.anchors = await this.anchorsService.getAnchorsByMap(this.mapId);
   }
+
+  // ================= FORM =================
 
   isFormValid(): boolean {
     return !!(
       this.anchorForm.name &&
       this.anchorForm.type &&
       this.anchorForm.name.length <= 50
-
     );
   }
 
-  onApply(): void {
+  async onApply(): Promise<void> {
+
     if (!this.anchorForm.name || !this.anchorForm.type) {
       alert('Fill all required fields');
       return;
@@ -120,31 +135,46 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
       ...this.anchorForm
     };
 
-    this.anchorsService.addAnchor(toSave).then(() => {
-      this.resetForm();
-      this.isAnchorDetailsOpen = false;
-      this.anchorsService.setLastClickPos(null);
-    });
+    await this.anchorsService.addAnchor(toSave);
+
+    // ✅ إعادة تحميل بعد الإضافة
+    await this.loadAnchors();
+
+    this.resetForm();
+    this.isAnchorDetailsOpen = false;
+    this.anchorsService.setLastClickPos(null);
   }
 
   resetForm() {
     this.anchorForm = {
       qrId: '',
-      name: '', type: '', description: '', referenceCorner: '',
+      name: '',
+      type: '',
+      description: '',
+      referenceCorner: '',
       pixels: { x: 0, y: 0 },
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 1, y: 1, z: 1 },
     };
   }
 
-  openAnchorDetails() { this.isAnchorDetailsOpen = true; }
-  toggleAnchorsList() { this.isAnchorsListOpen = !this.isAnchorsListOpen; }
-  toggleAnchorDetails() { this.isAnchorDetailsOpen = !this.isAnchorDetailsOpen; }
+  // ================= UI =================
+
+  openAnchorDetails() {
+    this.isAnchorDetailsOpen = true;
+  }
+
+  toggleAnchorsList() {
+    this.isAnchorsListOpen = !this.isAnchorsListOpen;
+  }
+
+  toggleAnchorDetails() {
+    this.isAnchorDetailsOpen = !this.isAnchorDetailsOpen;
+  }
 
   onDeleteClick(anchor: Anchor, event?: MouseEvent): void {
-    if (event) {
-      event.stopPropagation();
-    }
+    if (event) event.stopPropagation();
+
     this.anchorToDelete = anchor;
     this.isDeleteConfirmOpen = true;
   }
@@ -154,21 +184,23 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
     this.anchorToDelete = null;
   }
 
-  confirmDelete(): void {
-    if (!this.anchorToDelete || !this.anchorToDelete.id) {
+  async confirmDelete(): Promise<void> {
+    if (!this.anchorToDelete?.id) {
       this.cancelDelete();
       return;
     }
 
-    this.anchorsService.deleteAnchor(this.anchorToDelete.id)
-      .then(() => {
-        this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
-        this.cancelDelete();
-        this.isAnchorDetailsOpen = false;
-      })
-      .catch(err => {
-        console.error('Error deleting anchor:', err);
-        this.cancelDelete();
-      });
+    try {
+      await this.anchorsService.deleteAnchor(this.anchorToDelete.id);
+
+      // ✅ تحديث القائمة
+      this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
+
+      this.cancelDelete();
+      this.isAnchorDetailsOpen = false;
+    } catch (err) {
+      console.error('Error deleting anchor:', err);
+      this.cancelDelete();
+    }
   }
 }
