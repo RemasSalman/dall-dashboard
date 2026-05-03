@@ -4,11 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AnchorsService, Anchor } from '../../../../services/anchors.service';
 
 interface AnchorForm {
-  qrId: string;
-  name: string;
-  type: string;
-  description: string;
-  referenceCorner: string;
+  qrId: string; name: string; type: string; description: string; referenceCorner: string;
   pixels: { x: number; y: number };
   position: { x: number; y: number; z: number };
   scale: { x: number; y: number; z: number };
@@ -22,11 +18,8 @@ interface AnchorForm {
   styleUrls: ['./anchor-list-panel.scss']
 })
 export class AnchorListPanelComponent implements OnInit, OnChanges {
-
   @Input() mapId: string = '';
-
   anchors: Anchor[] = [];
-
   isAnchorsListOpen = false;
   isAnchorDetailsOpen = false;
 
@@ -35,27 +28,21 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
   anchorForm: AnchorForm = {
     qrId: '',
-    name: '',
-    type: '',
-    description: '',
-    referenceCorner: '',
+    name: '', type: '', description: '', referenceCorner: '',
+
     pixels: { x: 0, y: 0 },
     position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
   };
 
-  constructor(private anchorsService: AnchorsService) {}
+  constructor(private anchorsService: AnchorsService) { }
 
-  // ================= INIT =================
+  ngOnInit(): void {
+    this.anchorsService.getAnchorsByMap(this.mapId)
+      .then((data: Anchor[]) => {
+        this.anchors = data;
+      });
 
-  async ngOnInit(): Promise<void> {
-
-    // ✅ تحميل أولي
-    if (this.mapId) {
-      await this.loadAnchors();
-    }
-
-    // ✅ هذه subscriptions عادية (ما فيها Firestore)
     this.anchorsService.lastClickPos$
       .subscribe(pos => {
         if (!pos) return;
@@ -90,39 +77,38 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
           description: anchor.description ?? '',
           referenceCorner: anchor.referenceCorner ?? '',
           pixels: anchor.pixels ?? { x: 0, y: 0 },
+
           position: anchor.position ?? { x: 0, y: 0, z: 0 },
           scale: anchor.scale ?? { x: 1, y: 1, z: 1 },
         };
       });
   }
 
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['mapId'] && this.mapId) {
-      await this.loadAnchors();
+      this.loadAnchors();
     }
   }
 
-  // ================= DATA =================
-
-  async loadAnchors(): Promise<void> {
-    this.anchors = await this.anchorsService.getAnchorsByMap(this.mapId);
+  loadAnchors() {
+    this.anchorsService.getAnchorsByMap(this.mapId)
+      .then(data => this.anchors = data);
   }
-
-  // ================= FORM =================
 
   isFormValid(): boolean {
     return !!(
       this.anchorForm.name &&
       this.anchorForm.type &&
       this.anchorForm.name.length <= 50
+
     );
   }
 
-  async onApply(): Promise<void> {
-
+  onApply(): void {
     if (!this.anchorForm.name || !this.anchorForm.type) {
       alert('Fill all required fields');
       return;
+
     }
 
     if (this.anchorForm.name.length > 30) {
@@ -135,46 +121,42 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
       ...this.anchorForm
     };
 
-    await this.anchorsService.addAnchor(toSave);
+    this.anchorsService.addAnchor(toSave).then(() => {
+      this.loadAnchors(); // refresh right list
 
-    // ✅ إعادة تحميل بعد الإضافة
-    await this.loadAnchors();
+      this.anchorsService.setLastClickPos(null);
+      this.anchorsService.setSelectedAnchor(null);
 
-    this.resetForm();
-    this.isAnchorDetailsOpen = false;
-    this.anchorsService.setLastClickPos(null);
+      this.resetForm();
+      this.isAnchorDetailsOpen = false;
+    });
+    this.anchorsService.addAnchor(toSave).then(() => {
+      this.anchorsService.refreshAnchors();
+
+      this.resetForm();
+      this.isAnchorDetailsOpen = false;
+      this.anchorsService.setLastClickPos(null);
+    });
   }
 
   resetForm() {
     this.anchorForm = {
       qrId: '',
-      name: '',
-      type: '',
-      description: '',
-      referenceCorner: '',
+      name: '', type: '', description: '', referenceCorner: '',
       pixels: { x: 0, y: 0 },
       position: { x: 0, y: 0, z: 0 },
       scale: { x: 1, y: 1, z: 1 },
     };
   }
 
-  // ================= UI =================
-
-  openAnchorDetails() {
-    this.isAnchorDetailsOpen = true;
-  }
-
-  toggleAnchorsList() {
-    this.isAnchorsListOpen = !this.isAnchorsListOpen;
-  }
-
-  toggleAnchorDetails() {
-    this.isAnchorDetailsOpen = !this.isAnchorDetailsOpen;
-  }
+  openAnchorDetails() { this.isAnchorDetailsOpen = true; }
+  toggleAnchorsList() { this.isAnchorsListOpen = !this.isAnchorsListOpen; }
+  toggleAnchorDetails() { this.isAnchorDetailsOpen = !this.isAnchorDetailsOpen; }
 
   onDeleteClick(anchor: Anchor, event?: MouseEvent): void {
-    if (event) event.stopPropagation();
-
+    if (event) {
+      event.stopPropagation();
+    }
     this.anchorToDelete = anchor;
     this.isDeleteConfirmOpen = true;
   }
@@ -184,23 +166,21 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
     this.anchorToDelete = null;
   }
 
-  async confirmDelete(): Promise<void> {
-    if (!this.anchorToDelete?.id) {
+  confirmDelete(): void {
+    if (!this.anchorToDelete || !this.anchorToDelete.id) {
       this.cancelDelete();
       return;
     }
 
-    try {
-      await this.anchorsService.deleteAnchor(this.anchorToDelete.id);
-
-      // ✅ تحديث القائمة
-      this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
-
-      this.cancelDelete();
-      this.isAnchorDetailsOpen = false;
-    } catch (err) {
-      console.error('Error deleting anchor:', err);
-      this.cancelDelete();
-    }
+    this.anchorsService.deleteAnchor(this.anchorToDelete.id)
+      .then(() => {
+        this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
+        this.cancelDelete();
+        this.isAnchorDetailsOpen = false;
+      })
+      .catch(err => {
+        console.error('Error deleting anchor:', err);
+        this.cancelDelete();
+      });
   }
 }

@@ -1,32 +1,19 @@
-<div class="map-container"
-     [class.fullscreen]="isFullscreen"
-     (click)="onMapClick($event)">
+<div class="map-container" [class.fullscreen]="isFullscreen" (click)="onMapClick($event)">
 
-  <!-- 🖼️ صورة الخريطة -->
-  <img #mapImage
-       [src]="imageUrl || 'assets/images/mapview1.jpg'"
-       class="map-image"
-       (load)="onImageLoad()">
+  <img #mapImage [src]="imageUrl || 'assets/images/mapview1.jpg'" class="map-image" (load)="onImageLoad()">
 
-  <!-- 📍 Anchors -->
-  <div *ngFor="let anchor of anchors"
-       class="map-anchor"
-       [style.left.px]="getScaledX(anchor.position.x)"
-       [style.top.px]="getScaledY(anchor.position.y)"
-       (click)="onAnchorClick($event, anchor)">
+  <!-- Saved Anchors -->
+  <div *ngFor="let anchor of anchors" class="map-anchor" [style.left.px]="imageOffsetX + (anchor.pixels?.x || 0)"
+    [style.top.px]="imageOffsetY + (anchor.pixels?.y || 0)" (click)="onAnchorClick($event, anchor)">
 
-    <img src="assets/icons/service-anchor.png"
-         [alt]="anchor.name"
-         [title]="anchor.name">
+    <img src="assets/icons/service-anchor.png" [alt]="anchor.name" [title]="anchor.name">
 
     <span>{{ anchor.name }}</span>
   </div>
 
-  <!-- ✨ Preview Anchor -->
-  <div *ngIf="previewPos"
-       class="map-anchor preview"
-       [style.left.px]="getScaledX(previewPos.x)"
-       [style.top.px]="getScaledY(previewPos.y)">
+  <!-- Preview Anchor -->
+  <div *ngIf="previewPos" class="map-anchor preview" [style.left.px]="imageOffsetX + (previewPos.pixelX || 0)"
+    [style.top.px]="imageOffsetY + (previewPos.pixelY || 0)">
 
     <img src="assets/icons/service-anchor.png" alt="New anchor">
   </div>

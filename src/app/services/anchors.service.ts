@@ -32,7 +32,7 @@ export interface Anchor {
 @Injectable({ providedIn: 'root' })
 export class AnchorsService {
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore) { }
 
   // =========================
   // 🔵 Shared UI State
@@ -99,5 +99,12 @@ export class AnchorsService {
   async updateAnchor(anchorId: string, data: Partial<Anchor>): Promise<void> {
     const ref = doc(this.firestore, 'anchors', anchorId);
     return await updateDoc(ref, data);
+  }
+
+  private anchorRefreshSubject = new BehaviorSubject<void>(undefined);
+  anchorRefresh$ = this.anchorRefreshSubject.asObservable();
+
+  refreshAnchors() {
+    this.anchorRefreshSubject.next();
   }
 }
