@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { AnalyticsService, NavigationSession } from '../../../services/analytics.service';
 import Chart from 'chart.js/auto';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'app-analytics-page',
@@ -351,5 +352,50 @@ ${this.recentSessions
         link.click();
 
         URL.revokeObjectURL(url);
+    }
+
+    exportFullDashboard(): void {
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+        const dailyUsersData = this.dailyUsersLabels.map((label, i) => ({
+            'Day': label,
+            'Users Count': this.dailyUsersData[i]
+        }));
+        const wsDaily = XLSX.utils.json_to_sheet(dailyUsersData);
+        XLSX.utils.book_append_sheet(wb, wsDaily, 'Daily Users');
+
+        const busyAreasData = this.busyAreasLabels.map((label, i) => ({
+            'Area Name': label,
+            'Total Visitors': this.busyAreasData[i]
+        }));
+        const wsAreas = XLSX.utils.json_to_sheet(busyAreasData);
+        XLSX.utils.book_append_sheet(wb, wsAreas, 'Busy Areas');
+
+        const avgTimeData = [
+            { 'Metric': 'Average Time to Destination', 'Value': `${this.avgDuration} min` },
+            { 'Description': 'Based on all completed trips in the system' }
+        ];
+        const wsAvgTime = XLSX.utils.json_to_sheet(avgTimeData);
+        XLSX.utils.book_append_sheet(wb, wsAvgTime, 'Average Time');
+
+        const completionData = [
+            { 'Metric': 'Completion Rate', 'Percentage': `${this.completionRate}%` },
+            { 'Metric': 'Total Completed Trips', 'Count': this.completedTripsCount },
+            { 'Metric': 'Total Started Trips', 'Count': this.sessions.length }
+        ];
+        const wsCompletion = XLSX.utils.json_to_sheet(completionData);
+        XLSX.utils.book_append_sheet(wb, wsCompletion, 'Completed Navigations');
+
+        const sessionsData = this.sessions.map(s => ({
+            'From (Start Gate)': s.startAnchorName || 'Unknown',
+            'To (Destination)': s.destinationName || 'Unknown',
+            'Status': s.status || 'unknown',
+            'Duration (Seconds)': s.durationSeconds || 0,
+            'Start Time': this.formatDate(s.startedAt)
+        }));
+        const wsSessions = XLSX.utils.json_to_sheet(sessionsData);
+        XLSX.utils.book_append_sheet(wb, wsSessions, 'Recent Sessions');
+
+        XLSX.writeFile(wb, 'DALL_Full_Analytics_Report.xlsx');
     }
 }

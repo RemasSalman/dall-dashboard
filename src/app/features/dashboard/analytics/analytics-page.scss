@@ -36,30 +36,30 @@
 }
 
 .hero-content h1::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: -20px;
-  transform: translateY(-50%);
-  width: 1138px;
-  height: 50px;
-  border-radius: 999px;
-  z-index: 0;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    width: 1138px;
+    height: 50px;
+    border-radius: 999px;
+    z-index: 0;
 
-  background: linear-gradient(to left,
-      #b8f1ed -10%,
-      rgba(185, 233, 242, 0.4) 20%,
-      rgba(185, 233, 242, 0.3) 45%,
-      rgba(185, 233, 242, 0.35) 70%,
-      rgba(185, 233, 242, 0.08) 88%,
-      rgba(185, 233, 242, 0) 100%);
+    background: linear-gradient(to left,
+            #b8f1ed -10%,
+            rgba(185, 233, 242, 0.4) 20%,
+            rgba(185, 233, 242, 0.3) 45%,
+            rgba(185, 233, 242, 0.35) 70%,
+            rgba(185, 233, 242, 0.08) 88%,
+            rgba(185, 233, 242, 0) 100%);
 }
 
 .hero-logo {
-  width: 160px;
-  height: auto;
-  object-fit: contain;
-  z-index: 10;
+    width: 160px;
+    height: auto;
+    object-fit: contain;
+    z-index: 10;
 }
 
 .hero-logo img {
@@ -311,5 +311,42 @@ canvas {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+    }
+}
+
+.dashboard-actions {
+    display: flex;
+    justify-content: flex-start;;
+    margin-bottom: -10px;
+    padding: 0 4px;
+}
+
+.export-excel-btn {
+    background: #59c8d8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(89, 200, 216, 0.15);
+
+    &:hover {
+        background: #4a4ac4;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(89, 200, 216, 0.25);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    .icon {
+        font-size: 18px;
     }
 }
