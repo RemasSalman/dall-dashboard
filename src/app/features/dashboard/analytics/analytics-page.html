@@ -64,36 +64,42 @@
     </section>
 
     <section class="panel-card sessions-card">
-        <div class="panel-header sessions-header">
+        <div class="sessions-main-header">
             <h2>Recent Sessions</h2>
-
-            <div class="table-head-inline">
-                <span>Status</span>
-                <span>Duration</span>
-                <span>Start Time</span>
-            </div>
         </div>
 
-        <div class="sessions-table">
-            <div class="session-row" *ngFor="let session of recentSessions">
-                <div class="session-main">
-                    <span class="from">{{ session.startAnchorName || 'Unknown' }}</span>
-                    <span class="to">{{ session.destinationName || 'Unknown' }}</span>
+        <div class="sessions-container">
+            <div class="table-head-row">
+                <div class="head-main">
+                    <span>Origin</span>
+                    <span>Destination</span>
                 </div>
-
-                <div class="session-extra">
-                    <span class="status" [class.completed]="session.status === 'completed'">
-                        {{ session.status || 'unknown' }}
-                    </span>
-                    <span>{{ session.durationSeconds || 0 }} sec</span>
-                    <span>{{ formatDate(session.startedAt) }}</span>
+                <div class="head-extra">
+                    <span>Status</span>
+                    <span>Duration</span>
+                    <span>Start Time</span>
                 </div>
             </div>
 
-            <div class="empty-row" *ngIf="recentSessions.length === 0">
-                No recent sessions yet.
+            <div class="sessions-table">
+                <div class="session-row" *ngFor="let session of recentSessions">
+                    <div class="session-main">
+                        <span class="from">{{ session.startAnchorName || 'Unknown' }}</span>
+                        <span class="to">{{ session.destinationName || 'Unknown' }}</span>
+                    </div>
+
+                    <div class="session-extra">
+                        <span class="status" [class.completed]="session.status === 'completed'">
+                            {{ session.status || 'unknown' }}
+                        </span>
+                        <span>{{ session.durationSeconds || 0 }} sec</span>
+                        <span>{{ formatDate(session.startedAt) }}</span>
+                    </div>
+                </div>
+
+                <div class="empty-row" *ngIf="recentSessions.length === 0">
+                    No recent sessions yet.
+                </div>
             </div>
         </div>
     </section>
-
-</div>
