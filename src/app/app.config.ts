@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
 
     provideFirebaseApp(() => initializeApp(environment.firebase)),
 
-    // 🔥 Firestore
+    // Firestore
     provideFirestore(() => {
       const firestore = getFirestore();
 
@@ -36,7 +36,7 @@ export const appConfig: ApplicationConfig = {
       return firestore;
     }),
 
-    // 🔐 Auth
+    //  Auth
     provideAuth(() => {
       const auth = getAuth();
 
