@@ -93,7 +93,12 @@ export class AnalyticsPageComponent implements OnInit, AfterViewInit, OnDestroy 
 
     private prepareRecentSessions(): void {
         this.recentSessions = [...this.sessions]
-            .sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0))
+            .sort((a, b) => {
+                const dateA = a.startedAt ? new Date(a.startedAt).getTime() : 0;
+                const dateB = b.startedAt ? new Date(b.startedAt).getTime() : 0;
+
+                return dateB - dateA;
+            })
             .slice(0, 5);
     }
 
