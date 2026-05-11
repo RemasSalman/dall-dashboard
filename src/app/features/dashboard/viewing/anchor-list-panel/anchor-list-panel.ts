@@ -38,10 +38,6 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
   constructor(private anchorsService: AnchorsService) { }
 
   ngOnInit(): void {
-    this.anchorsService.getAnchorsByMap(this.mapId)
-      .then((data: Anchor[]) => {
-        this.anchors = data;
-      });
 
     this.anchorsService.lastClickPos$
       .subscribe(pos => {
@@ -108,7 +104,6 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
     if (!this.anchorForm.name || !this.anchorForm.type) {
       alert('Fill all required fields');
       return;
-
     }
 
     if (this.anchorForm.name.length > 30) {
@@ -122,20 +117,8 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
     };
 
     this.anchorsService.addAnchor(toSave).then(() => {
-      this.loadAnchors(); // refresh right list
+      window.location.reload();
 
-      this.anchorsService.setLastClickPos(null);
-      this.anchorsService.setSelectedAnchor(null);
-
-      this.resetForm();
-      this.isAnchorDetailsOpen = false;
-    });
-    this.anchorsService.addAnchor(toSave).then(() => {
-      this.anchorsService.refreshAnchors();
-
-      this.resetForm();
-      this.isAnchorDetailsOpen = false;
-      this.anchorsService.setLastClickPos(null);
     });
   }
 
@@ -174,9 +157,8 @@ export class AnchorListPanelComponent implements OnInit, OnChanges {
 
     this.anchorsService.deleteAnchor(this.anchorToDelete.id)
       .then(() => {
-        this.anchors = this.anchors.filter(a => a.id !== this.anchorToDelete!.id);
-        this.cancelDelete();
-        this.isAnchorDetailsOpen = false;
+        window.location.reload();
+
       })
       .catch(err => {
         console.error('Error deleting anchor:', err);

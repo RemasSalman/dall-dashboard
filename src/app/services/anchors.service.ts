@@ -13,8 +13,7 @@ import {
   getDocs
 } from '@angular/fire/firestore';
 
-import { BehaviorSubject } from 'rxjs';
-
+import { BehaviorSubject, Subject } from 'rxjs';
 export interface Anchor {
   qrId: string;
   id?: string;
@@ -101,7 +100,7 @@ export class AnchorsService {
     return await updateDoc(ref, data);
   }
 
-  private anchorRefreshSubject = new BehaviorSubject<void>(undefined);
+  private anchorRefreshSubject = new Subject<void>();
   anchorRefresh$ = this.anchorRefreshSubject.asObservable();
 
   refreshAnchors() {

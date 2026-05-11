@@ -11,7 +11,7 @@
 
     <div class="main-actions-group glass-panel">
 
-      <button class="modern-btn" (click)="fileInput.click()">
+      <button class="modern-btn add" (click)="fileInput.click()">
         <span class="plus-sign">＋</span> Add Map
       </button>
 
@@ -26,13 +26,43 @@
             </option>
           </select>
         </div>
+        <img src="assets/icons/chevron.png" width="8" class="chevron">
+
       </div>
 
       <button *ngIf="currentMapId" class="modern-btn delete-variant" (click)="onDeleteMap()">
-        🗑️ Delete
+
+        🗑 Delete Map
       </button>
 
     </div>
 
-  </div>
-</div>
+    <div *ngIf="isFullscreen" class="fullscreen-exit-button-container">
+      <button class="fullscreen-button-exit" (click)="exitFullscreen()">❎ Exit</button>
+    </div>
+
+    <div class="modal-overlay" *ngIf="showModal">
+      <div class="modal-box">
+        <h3 class="modal-title">Name Your Map</h3>
+        <input #nameInput type="text" class="modal-input" placeholder="Ex: Main Stadium, Section A...">
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+          <button class="btn-save" (click)="onSaveMap(nameInput.value)">Save Map</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" *ngIf="showSuccessModal">
+      <div class="modal-box success-box">
+        <div class="success-icon-wrapper">
+          <span class="checkmark">✔</span>
+        </div>
+
+        <h3 class="modal-title">Success!</h3>
+        <p class="modal-desc">Map has been uploaded successfully.</p>
+
+        <div class="modal-actions center-action">
+          <button class="btn-save full-width" (click)="closeSuccessModal()">Great!</button>
+        </div>
+      </div>
+    </div>

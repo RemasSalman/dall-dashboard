@@ -1,43 +1,50 @@
 .main-container {
+    position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     min-height: 100vh;
-    background-color: #E0E0E0;
     font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.55);
 }
 
-.top-link {
-    background: white;
-    padding: 8px 20px;
-    border-radius: 25px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+.main-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+
+    background: url('/assets/images/login.png') center/cover no-repeat;
+
+    opacity: 0.8;
 }
 
 .login-card {
-    background-color: white;
-    width: 900px;
-    max-width: 95%;
-    height: 600px;
-    border-radius: 40px;
+    width: 500px;
+    max-width: 92%;
+    min-height: 600px;
+    border-radius: 20px;
+    padding: 10px;
     display: flex;
     overflow: hidden;
-    padding: 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+
+    background: rgba(255, 255, 255, 0.075);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border: 1px solid rgba(255, 255, 255, 0.264);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.18);
 }
+
 
 .image-section {
     flex: 1;
     border-radius: 30px;
     overflow: hidden;
     background-color: #000;
+
     img {
         width: 100%;
         height: 100%;
@@ -47,11 +54,11 @@
 
 .form-section {
     flex: 1;
-    padding: 40px 60px;
+    padding: 60px 40px 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    direction: ltr; 
+    direction: ltr;
 }
 
 .brand {
@@ -62,10 +69,23 @@
     gap: 5px;
 }
 
+.logo-wrapper {
+    display: flex;
+    justify-content: left;
+}
+
+.login-logo {
+    width: 200px;
+    height: auto;
+    filter: drop-shadow(0 0 18px rgba(115, 97, 255, 0.25));
+
+    object-fit: contain;
+}
+
 h2 {
     font-size: 32px;
     color: #1a1a1a;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 .subtitle {
@@ -76,23 +96,24 @@ h2 {
 
 .input-group {
     margin-bottom: 25px;
-    border-bottom: 1px solid #ddd;
-    
-    label {
-        display: block;
-        font-size: 12px;
-        color: #aaa;
-        margin-bottom: 5px;
-    }
-    
+    background-color: #f31b1b00;
+    border-bottom: 1px solid #dddddd00;
+
+
     input {
-        width: 100%;
-        border: none;
-        outline: none;
-        padding: 8px 0;
-        font-size: 16px;
-        color: #333;
+        height: 46px;
+        border: 1px solid rgba(203, 213, 225, 0.6);
+        border-radius: 12px;
+        padding: 0 14px;
+        font-size: 12px;
+        width: 90%;
         background: transparent;
+    }
+
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+        -webkit-text-fill-color: #111827 !important;
+        transition: background-color 9999s ease-in-out 0s;
     }
 }
 
@@ -117,23 +138,29 @@ h2 {
 }
 
 .forgot-pass {
-    color: #ccc;
+    color: #0000004b;
     text-decoration: none;
 }
 
 .btn-login {
     width: 100%;
-    background-color: #1a1a1a;
-    color: white;
-    padding: 15px;
+    height: 40px;
+    background:
+        linear-gradient(to right,
+            rgb(25, 1, 74),
+            rgba(45, 1, 134, 0.719));
     border: none;
-    border-radius: 12px;
+    color: white;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    margin-bottom: 15px;
-    transition: background 0.3s;
-    
-    &:hover { background: #333; }
+
+    &:hover {
+        background:
+            linear-gradient(to right,
+                rgba(4, 196, 151, 0.366),
+                rgba(20, 219, 173, 0.38));
+    }
 }
 
 .btn-google {
@@ -155,7 +182,7 @@ h2 {
     font-size: 12px;
     margin-top: 30px;
     color: #888;
-    
+
     a {
         color: #1a1a1a;
         font-weight: 600;

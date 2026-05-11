@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullscreenService } from '../../../../services/fullscreen.service';
-import { MapsService, MapData } from '../../../../services/maps.service'; 
+import { MapsService, MapData } from '../../../../services/maps.service';
 
 @Component({
   standalone: true,
@@ -11,7 +11,7 @@ import { MapsService, MapData } from '../../../../services/maps.service';
   imports: [CommonModule]
 })
 export class MapToolbarComponent implements OnInit {
-  
+
   isFullscreen = false;
   maps: MapData[] = [];
   currentMapId: string = '';
@@ -27,7 +27,7 @@ export class MapToolbarComponent implements OnInit {
   constructor(
     private fullscreenService: FullscreenService,
     private mapsService: MapsService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fullscreenService.isFullscreen$.subscribe(state => this.isFullscreen = state);
@@ -53,15 +53,16 @@ export class MapToolbarComponent implements OnInit {
   selectMap(map: MapData) {
     this.currentMapId = map.id!;
     this.currentMapData = map;
-    this.mapSelected.emit(map); 
+    this.mapSelected.emit(map);
   }
 
   // 1. File Selection
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
+
     if (file) {
       this.pendingFile = file;
-      this.showModal = true; 
+      this.showModal = true;
       event.target.value = '';
     }
   }
@@ -72,10 +73,10 @@ export class MapToolbarComponent implements OnInit {
 
     try {
       await this.mapsService.uploadMap(this.pendingFile, nameInput);
-      
+
       // Close input modal and open success modal
-      this.closeModal(); 
-      this.showSuccessModal = true; 
+      this.closeModal();
+      this.showSuccessModal = true;
 
     } catch (error: any) {
       alert(error.message);

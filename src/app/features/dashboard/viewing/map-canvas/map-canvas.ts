@@ -37,6 +37,9 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
       setTimeout(() => this.updateMapSize(), 100);
     });
     this.anchorsService.lastClickPos$.subscribe(pos => this.previewPos = pos);
+    this.anchorsService.anchorRefresh$.subscribe(() => {
+      this.loadAnchorsForCurrentMap();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -105,6 +108,7 @@ export class MapCanvasComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   onAnchorClick(event: MouseEvent, anchor: Anchor): void {
+    event.preventDefault();
     event.stopPropagation();
 
     this.anchorsService.setLastClickPos(null);
